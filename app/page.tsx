@@ -5,6 +5,8 @@ import { Search, Filter, TrendingUp, Calendar, User, Building2, ArrowUpDown, Arr
 import { VeilleCard } from '@/components/VeilleCard'
 import { FilterPanel } from '@/components/FilterPanel'
 import { VeilleModal } from '@/components/VeilleModal'
+import { RefreshButton } from '@/components/RefreshButton'
+import { DebugInfo } from '@/components/DebugInfo'
 import { VeilleData } from '@/types/veille'
 
 export default function Home() {
@@ -211,12 +213,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Modal pour les détails complets */}
-      <VeilleModal
-        data={selectedArticle}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
-    </div>
-  )
+             {/* Modal pour les détails complets */}
+       <VeilleModal
+         data={selectedArticle}
+         isOpen={isModalOpen}
+         onClose={closeModal}
+       />
+       
+       {/* Composant de debug */}
+       <DebugInfo lastRefresh={null} dataCount={filteredData.length} />
+     </div>
+   )
 }

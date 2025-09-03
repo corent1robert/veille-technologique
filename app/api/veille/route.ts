@@ -6,17 +6,17 @@ const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || 'your_api_key_here'
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || 'your_base_id_here'
 const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Table2'
 
-// Debug des variables d'environnement
-console.log('🔧 Configuration Airtable:')
-console.log('- API_KEY:', AIRTABLE_API_KEY ? `${AIRTABLE_API_KEY.substring(0, 10)}...` : 'NON DÉFINI')
-console.log('- BASE_ID:', AIRTABLE_BASE_ID)
-console.log('- TABLE_NAME:', AIRTABLE_TABLE_NAME)
-
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID)
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url)
+    const forceRefresh = searchParams.get('t') // Timestamp pour forcer le refresh
+    
     console.log('🚀 Début de la récupération des données Airtable')
+    if (forceRefresh) {
+      console.log(`🔄 Refresh forcé demandé à ${new Date(parseInt(forceRefresh)).toLocaleTimeString()}`)
+    }
     
     // Récupération de tous les enregistrements (limite augmentée)
     const records = await base(AIRTABLE_TABLE_NAME).select({
@@ -117,20 +117,41 @@ export async function GET() {
     })
 
     console.log(`🎉 Données transformées avec succès: ${data.length} articles`)
-    return NextResponse.json(data)
+    
+    // Headers pour contrôler le cache
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'X-Last-Updated': new Date().toISOString(),
+      'X-Articles-Count': data.length.toString()
+    })
+    
+    return new NextResponse(JSON.stringify(data), {
+      status: 200,
+      headers
+    })
   } catch (error) {
     console.error('❌ Erreur lors de la récupération des données Airtable:', error)
-    return NextResponse.json(
-      { 
-        error: 'Erreur lors de la récupération des données',
-        details: error instanceof Error ? error.message : 'Erreur inconnue',
-        config: {
-          hasApiKey: !!AIRTABLE_API_KEY,
-          hasBaseId: !!AIRTABLE_BASE_ID,
-          hasTableName: !!AIRTABLE_TABLE_NAME
-        }
+    
+    const errorResponse = {
+      error: 'Erreur lors de la récupération des données',
+      details: error instanceof Error ? error.message : 'Erreur inconnue',
+      config: {
+        hasApiKey: !!AIRTABLE_API_KEY,
+        hasBaseId: !!AIRTABLE_BASE_ID,
+        hasTableName: !!AIRTABLE_TABLE_NAME
       },
-      { status: 500 }
-    )
+      timestamp: new Date().toISOString()
+    }
+    
+    return new NextResponse(JSON.stringify(errorResponse), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      }
+    })
   }
 }
