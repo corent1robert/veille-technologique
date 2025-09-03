@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, User, Building2, TrendingUp, Target, Star, Eye } from 'lucide-react'
+import { Calendar, User, Building2, TrendingUp, Target, Star, Eye, ExternalLink } from 'lucide-react'
 import { VeilleData } from '@/types/veille'
 
 interface VeilleCardProps {
@@ -125,8 +125,8 @@ export function VeilleCard({ data, onViewMore }: VeilleCardProps) {
             )}
           </div>
 
-          {/* Bouton Voir plus - Toujours en bas */}
-          <div className="pt-3 border-t border-neutral-100 mt-auto">
+          {/* Boutons d'action - Toujours en bas */}
+          <div className="pt-3 border-t border-neutral-100 mt-auto space-y-2">
             <button
               onClick={() => onViewMore(data)}
               className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-md transition-colors duration-200"
@@ -134,6 +134,17 @@ export function VeilleCard({ data, onViewMore }: VeilleCardProps) {
               <Eye className="w-4 h-4" />
               <span className="text-sm font-medium">Voir plus de détails</span>
             </button>
+            {data.article?.url && (
+              <a
+                href={data.article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition-colors duration-200"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span className="text-sm font-medium">Article</span>
+              </a>
+            )}
           </div>
         </div>
     </div>

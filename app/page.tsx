@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Search, Filter, TrendingUp, Calendar, User, Building2 } from 'lucide-react'
+import { Search, Filter, TrendingUp, Calendar, User, Building2, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 import { VeilleCard } from '@/components/VeilleCard'
 import { FilterPanel } from '@/components/FilterPanel'
 import { VeilleModal } from '@/components/VeilleModal'
@@ -20,6 +20,8 @@ export default function Home() {
     trl: '',
     source: ''
   })
+  const [sortBy, setSortBy] = useState<'date' | 'trl' | 'pertinence'>('date')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
   useEffect(() => {
     fetchData()
@@ -27,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     applyFilters()
-  }, [data, filters])
+  }, [data, filters, sortBy, sortOrder])
 
   const fetchData = async () => {
     try {
@@ -78,6 +80,34 @@ export default function Home() {
       )
     }
 
+    // Tri des données
+    filtered.sort((a, b) => {
+      let aValue: any, bValue: any
+
+      switch (sortBy) {
+        case 'date':
+          aValue = new Date(a.article?.date_publication || 0).getTime()
+          bValue = new Date(b.article?.date_publication || 0).getTime()
+          break
+        case 'trl':
+          aValue = a.innovation?.numero_TRL || 0
+          bValue = b.innovation?.numero_TRL || 0
+          break
+        case 'pertinence':
+          aValue = a.evaluation?.pertinence || 0
+          bValue = b.evaluation?.pertinence || 0
+          break
+        default:
+          return 0
+      }
+
+      if (sortOrder === 'asc') {
+        return aValue - bValue
+      } else {
+        return bValue - aValue
+      }
+    })
+
     setFilteredData(filtered)
   }
 
@@ -125,6 +155,43 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filtres */}
         <FilterPanel filters={filters} setFilters={setFilters} data={data} />
+
+        {/* Options de tri */}
+        <div className="mt-6 bg-white rounded-lg shadow-sm border border-neutral-200 p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm font-medium text-neutral-700">Trier par :</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'date' | 'trl' | 'pertinence')}
+                className="px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="date">Date de publication</option>
+                <option value="trl">Niveau TRL</option>
+                <option value="pertinence">Pertinence</option>
+              </select>
+              <button
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="flex items-center space-x-2 px-3 py-2 border border-neutral-300 rounded-md text-sm hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              >
+                {sortOrder === 'asc' ? (
+                  <>
+                    <ArrowUp className="w-4 h-4" />
+                    <span>Croissant</span>
+                  </>
+                ) : (
+                  <>
+                    <ArrowDown className="w-4 h-4" />
+                    <span>Décroissant</span>
+                  </>
+                )}
+              </button>
+            </div>
+            <div className="text-sm text-neutral-500">
+              {filteredData.length} articles
+            </div>
+          </div>
+        </div>
 
         {/* Grille des articles */}
         <div className="mt-8">
