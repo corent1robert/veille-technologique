@@ -27,23 +27,25 @@ export function VeilleCard({ data, onViewMore }: VeilleCardProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-neutral-200 hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
+    <div className="bg-white rounded-lg shadow-sm border border-neutral-200 hover:shadow-md transition-shadow duration-200 flex flex-col h-full max-w-full overflow-hidden">
       {/* Header de la carte */}
       <div className="p-6 border-b border-neutral-100">
         <div className="flex items-start justify-between mb-3">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-neutral-900 line-clamp-2 mb-2">
+          <div className="flex-1 min-w-0 pr-3">
+            <h3 className="text-lg font-semibold text-neutral-900 line-clamp-2 mb-2 break-words leading-tight">
               {data.article?.titre || 'Titre non disponible'}
             </h3>
             {/* Domaine de la source */}
             {data.article?.source && (
               <div className="flex items-center text-xs text-neutral-500 mb-2">
-                <Building2 className="w-3 h-3 mr-1" />
-                <span className="truncate">{data.article.source}</span>
+                <Building2 className="w-3 h-3 mr-1 flex-shrink-0" />
+                <span className="truncate block max-w-full" title={data.article.source}>
+                  {data.article.source}
+                </span>
               </div>
             )}
           </div>
-          <div className="flex flex-col space-y-2 ml-3">
+          <div className="flex flex-col space-y-2 ml-3 flex-shrink-0">
             {/* Scores d'évaluation */}
             {data.evaluation?.pertinence && (
               <div className="flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full">
@@ -58,7 +60,7 @@ export function VeilleCard({ data, onViewMore }: VeilleCardProps) {
           </div>
         </div>
 
-        {/* Description courte avec limitation de hauteur */}
+        {/* Description courte */}
         <p className="text-neutral-600 text-sm mb-3 break-words leading-relaxed">
           {data.article?.description_courte || 'Description non disponible'}
         </p>
