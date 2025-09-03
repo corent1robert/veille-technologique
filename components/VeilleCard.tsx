@@ -58,8 +58,8 @@ export function VeilleCard({ data, onViewMore }: VeilleCardProps) {
           </div>
         </div>
 
-        {/* Description courte */}
-        <p className="text-neutral-600 text-sm mb-3">
+        {/* Description courte avec limitation de hauteur */}
+        <p className="text-neutral-600 text-sm mb-3 break-words leading-relaxed">
           {data.article?.description_courte || 'Description non disponible'}
         </p>
 

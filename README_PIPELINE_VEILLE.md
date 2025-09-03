@@ -134,3 +134,4 @@ Inoreader → Apify → GPT30 → GPT32 → GPT33 → GPT34 → GPT35 → GPT36 
 - Monitorer la qualité des sorties JSON
 - Ajuster les prompts si nécessaire
 - Mettre à jour les modèles GPT selon disponibilité
+

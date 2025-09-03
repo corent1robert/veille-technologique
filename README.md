@@ -129,3 +129,4 @@ Pour toute question ou problème :
 1. Vérifier la configuration Airtable
 2. Contrôler les variables d'environnement
 3. Tester l'API en local
+

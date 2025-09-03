@@ -6,30 +6,40 @@ const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || 'your_api_key_here'
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || 'your_base_id_here'
 const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Table2'
 
+// Debug des variables d'environnement
+console.log('🔧 Configuration Airtable:')
+console.log('- API_KEY:', AIRTABLE_API_KEY ? `${AIRTABLE_API_KEY.substring(0, 10)}...` : 'NON DÉFINI')
+console.log('- BASE_ID:', AIRTABLE_BASE_ID)
+console.log('- TABLE_NAME:', AIRTABLE_TABLE_NAME)
+
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID)
 
 export async function GET() {
   try {
+    console.log('🚀 Début de la récupération des données Airtable')
+    
     // Récupération de tous les enregistrements (limite augmentée)
     const records = await base(AIRTABLE_TABLE_NAME).select({
       maxRecords: 100000, // Limite très élevée pour récupérer tous les articles
       view: 'Grid view'
     }).all()
 
-    console.log(`Total des enregistrements récupérés: ${records.length}`)
+    console.log(`✅ Total des enregistrements récupérés: ${records.length}`)
 
     // Debug: afficher la structure du premier enregistrement
     if (records.length > 0) {
-      console.log('Structure du premier enregistrement:')
+      console.log('📋 Structure du premier enregistrement:')
       console.log('Champs disponibles:', Object.keys(records[0].fields))
       console.log('Premier titre trouvé:', records[0].fields['Titre'] || 'AUCUN TITRE')
       
       // Debug spécifique pour les champs d'évaluation
-      console.log('Champs d\'évaluation disponibles:')
+      console.log('🔍 Champs d\'évaluation disponibles:')
       console.log('- Pertinence:', records[0].fields['Pertinence'])
       console.log('- Pertinence_explication:', records[0].fields['Pertinence_explication'])
       console.log('- Fiabilite:', records[0].fields['Fiabilite'])
       console.log('- Fiabilite_explication:', records[0].fields['Fiabilite_explication'])
+    } else {
+      console.log('⚠️ Aucun enregistrement trouvé - Vérifiez la configuration Airtable')
     }
 
     // Filtrer seulement les articles avec titre vide
@@ -38,7 +48,7 @@ export async function GET() {
       return titre && typeof titre === 'string' && titre.trim() !== ''
     })
 
-    console.log(`Articles filtrés (avec titre valide): ${filteredRecords.length}`)
+    console.log(`🎯 Articles filtrés (avec titre valide): ${filteredRecords.length}`)
 
     const data = filteredRecords.map(record => {
       const fields = record.fields
@@ -106,11 +116,20 @@ export async function GET() {
       }
     })
 
+    console.log(`🎉 Données transformées avec succès: ${data.length} articles`)
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Erreur lors de la récupération des données Airtable:', error)
+    console.error('❌ Erreur lors de la récupération des données Airtable:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des données' },
+      { 
+        error: 'Erreur lors de la récupération des données',
+        details: error instanceof Error ? error.message : 'Erreur inconnue',
+        config: {
+          hasApiKey: !!AIRTABLE_API_KEY,
+          hasBaseId: !!AIRTABLE_BASE_ID,
+          hasTableName: !!AIRTABLE_TABLE_NAME
+        }
+      },
       { status: 500 }
     )
   }
