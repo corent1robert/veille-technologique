@@ -33,15 +33,14 @@ export function RefreshButton({ onRefresh, className = '' }: RefreshButtonProps)
     <button
       onClick={handleRefresh}
       disabled={isRefreshing}
-      className={`inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md transition-colors duration-200 font-medium ${className}`}
+      className={`inline-flex items-center justify-center p-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md transition-colors duration-200 ${className}`}
       title="Actualiser les données (contourne le cache)"
     >
       {isRefreshing ? (
-        <Loader2 className="w-4 h-4 animate-spin" />
+        <Loader2 className="w-5 h-5 animate-spin" />
       ) : (
-        <RefreshCw className="w-4 h-4" />
+        <RefreshCw className="w-5 h-5" />
       )}
-      <span>{isRefreshing ? 'Actualisation...' : 'Actualiser'}</span>
     </button>
   )
 }
