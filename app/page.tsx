@@ -24,6 +24,7 @@ export default function Home() {
   })
   const [sortBy, setSortBy] = useState<'date' | 'trl' | 'pertinence'>('date')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -33,16 +34,50 @@ export default function Home() {
     applyFilters()
   }, [data, filters, sortBy, sortOrder])
 
-  const fetchData = async () => {
+  const fetchData = async (forceRefresh = false) => {
     try {
-      const response = await fetch('/api/veille')
+      setLoading(true)
+      
+      // URL avec timestamp pour forcer le refresh
+      const url = forceRefresh 
+        ? `/api/veille?t=${Date.now()}`
+        : '/api/veille'
+      
+      console.log(`🔄 Récupération des données: ${url}`)
+      
+      const response = await fetch(url, {
+        // Headers pour éviter le cache
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      })
+      
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`)
+      }
+      
       const result = await response.json()
+      console.log(`✅ ${result.length} articles récupérés`)
+      
       setData(result)
+      setLastRefresh(new Date())
+      
+      // Stocker en localStorage pour debug
+      localStorage.setItem('veille_last_refresh', new Date().toISOString())
+      localStorage.setItem('veille_data_count', result.length.toString())
+      
     } catch (error) {
-      console.error('Erreur lors du chargement des données:', error)
+      console.error('❌ Erreur lors du chargement des données:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleForceRefresh = async () => {
+    console.log('🔄 Refresh forcé demandé')
+    await fetchData(true)
   }
 
   const applyFilters = () => {
@@ -142,13 +177,19 @@ export default function Home() {
                 Veille Technologique
               </h1>
               <p className="text-neutral-600 mt-1">
-                La Biche-Renard - Interface employés
+                {loading ? 'Chargement...' : `${filteredData.length} articles disponibles`}
+                {lastRefresh && (
+                  <span className="text-xs text-neutral-500 ml-2">
+                    (Dernière actualisation: {lastRefresh.toLocaleTimeString('fr-FR')})
+                  </span>
+                )}
               </p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-sm text-neutral-500">
                 {filteredData.length} articles trouvés
               </div>
+              <RefreshButton onRefresh={handleForceRefresh} />
             </div>
           </div>
         </div>
@@ -221,7 +262,7 @@ export default function Home() {
        />
        
        {/* Composant de debug */}
-       <DebugInfo lastRefresh={null} dataCount={filteredData.length} />
+       <DebugInfo lastRefresh={lastRefresh} dataCount={filteredData.length} />
      </div>
    )
 }
