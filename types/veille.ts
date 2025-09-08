@@ -45,3 +45,26 @@ export interface VeilleData {
     priorite_veille?: number
   }
 }
+
+export interface FilterConfig {
+  id: string
+  type: 'select' | 'date' | 'numeric' | 'search'
+  label: string
+  field: string
+  operator?: 'eq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains'
+  options?: { value: string; label: string }[]
+}
+
+export interface ActiveFilter {
+  id: string
+  type: string
+  label: string
+  field: string
+  operator: string
+  value: string | number
+}
+
+export interface FilterState {
+  search: string
+  activeFilters: ActiveFilter[]
+}

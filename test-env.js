@@ -49,3 +49,4 @@ console.log('2. Sélectionnez votre projet')
 console.log('3. Allez dans Settings > Environment Variables')
 console.log('4. Ajoutez les variables manquantes')
 console.log('5. Redéployez votre application')
+

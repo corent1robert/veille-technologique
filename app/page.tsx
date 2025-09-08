@@ -7,7 +7,8 @@ import { FilterPanel } from '@/components/FilterPanel'
 import { VeilleModal } from '@/components/VeilleModal'
 import { RefreshButton } from '@/components/RefreshButton'
 import { DebugInfo } from '@/components/DebugInfo'
-import { VeilleData } from '@/types/veille'
+import { VeilleData, FilterState } from '@/types/veille'
+import { applyFilters, getFilterSummary } from '@/utils/filterUtils'
 
 export default function Home() {
   const [data, setData] = useState<VeilleData[]>([])
@@ -15,12 +16,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [selectedArticle, setSelectedArticle] = useState<VeilleData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FilterState>({
     search: '',
-    category: '',
-    priority: '',
-    trl: '',
-    source: ''
+    activeFilters: []
   })
   const [sortBy, setSortBy] = useState<'date' | 'trl' | 'pertinence'>('date')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
@@ -31,7 +29,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    applyFilters()
+    applyFiltersAndSort()
   }, [data, filters, sortBy, sortOrder])
 
   const fetchData = async (forceRefresh = false) => {
@@ -80,42 +78,9 @@ export default function Home() {
     await fetchData(true)
   }
 
-  const applyFilters = () => {
-    let filtered = [...data]
-
-    if (filters.search) {
-      filtered = filtered.filter(item => 
-        item.article?.titre?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        item.article?.description_courte?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        item.article?.mots_cles?.some(keyword => 
-          keyword.toLowerCase().includes(filters.search.toLowerCase())
-        )
-      )
-    }
-
-    if (filters.category) {
-      filtered = filtered.filter(item => 
-        item.article?.categorie?.includes(filters.category)
-      )
-    }
-
-    if (filters.priority) {
-      filtered = filtered.filter(item => 
-        item.metadata?.priorite_veille?.toString() === filters.priority
-      )
-    }
-
-    if (filters.trl) {
-      filtered = filtered.filter(item => 
-        item.innovation?.numero_TRL?.toString() === filters.trl
-      )
-    }
-
-    if (filters.source) {
-      filtered = filtered.filter(item => 
-        item.article?.source?.toLowerCase().includes(filters.source.toLowerCase())
-      )
-    }
+  const applyFiltersAndSort = () => {
+    // Appliquer les filtres
+    let filtered = applyFilters(data, filters)
 
     // Tri des données
     filtered.sort((a, b) => {
@@ -184,6 +149,11 @@ export default function Home() {
                   </span>
                 )}
               </p>
+              {getFilterSummary(filters) !== 'Aucun filtre' && (
+                <p className="text-sm text-blue-600 mt-1">
+                  {getFilterSummary(filters)}
+                </p>
+              )}
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-sm text-neutral-500">

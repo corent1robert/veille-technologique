@@ -92,3 +92,4 @@ export function DebugInfo({ lastRefresh, dataCount }: DebugInfoProps) {
     </div>
   )
 }
+

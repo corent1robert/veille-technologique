@@ -39,3 +39,4 @@ echo "5. Configurer les variables d'environnement Airtable"
 echo ""
 echo "🚀 Interface prête pour le déploiement Vercel !"
 
+
