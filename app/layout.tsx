@@ -4,6 +4,9 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Veille Technologique - La Biche-Renard',
   description: 'Interface de veille technologique pour les employés',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
