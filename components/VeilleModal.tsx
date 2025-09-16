@@ -1,7 +1,8 @@
 'use client'
 
-import { X, Calendar, User, Building2, Target, Star, TrendingUp, FileText, Lightbulb, Settings } from 'lucide-react'
+import { X, Calendar, User, Building2, Target, Star, TrendingUp, FileText, Lightbulb, Settings, FileSearch, Video, BookOpen, Newspaper, Briefcase } from 'lucide-react'
 import { VeilleData } from '@/types/veille'
+import { TRLInfo } from './TRLInfo'
 
 interface VeilleModalProps {
   data: VeilleData | null
@@ -23,10 +24,15 @@ export function VeilleModal({ data, isOpen, onClose }: VeilleModalProps) {
     }
   }
 
-  const getTRLColor = (trl: number) => {
-    if (trl <= 3) return 'bg-blue-100 text-blue-600'
-    if (trl <= 6) return 'bg-yellow-100 text-yellow-600'
-    return 'bg-green-100 text-green-600'
+  const getContentTypeIcon = (typologie: string) => {
+    const type = typologie?.toLowerCase() || ''
+    if (type.includes('article') || type.includes('news')) return <Newspaper className="w-4 h-4" />
+    if (type.includes('video') || type.includes('vidéo')) return <Video className="w-4 h-4" />
+    if (type.includes('étude') || type.includes('etude') || type.includes('study')) return <BookOpen className="w-4 h-4" />
+    if (type.includes('brevet') || type.includes('patent')) return <FileSearch className="w-4 h-4" />
+    if (type.includes('rapport') || type.includes('report')) return <FileText className="w-4 h-4" />
+    if (type.includes('entreprise') || type.includes('company')) return <Briefcase className="w-4 h-4" />
+    return <FileText className="w-4 h-4" />
   }
 
   return (
@@ -71,9 +77,17 @@ export function VeilleModal({ data, isOpen, onClose }: VeilleModalProps) {
                   </span>
                 )}
                 {data.innovation?.numero_TRL && data.innovation.numero_TRL > 0 && (
-                  <span className={`px-3 py-1 text-sm font-medium rounded-full ${getTRLColor(data.innovation.numero_TRL)}`}>
-                    TRL {data.innovation.numero_TRL}/9
-                  </span>
+                  <TRLInfo 
+                    trl={data.innovation.numero_TRL}
+                    explication={data.innovation.explication_TRL}
+                    projection={data.innovation.projection_TRL}
+                  />
+                )}
+                {data.article?.typologie_contenu && (
+                  <div className="flex items-center gap-1 px-3 py-1 bg-neutral-100 text-neutral-600 text-sm rounded-full" title={data.article.typologie_contenu}>
+                    {getContentTypeIcon(data.article.typologie_contenu)}
+                    <span>{data.article.typologie_contenu}</span>
+                  </div>
                 )}
               </div>
             </div>
@@ -189,7 +203,7 @@ export function VeilleModal({ data, isOpen, onClose }: VeilleModalProps) {
             </div>
           </div>
 
-          {/* Section Innovation & TRL - Maintenant avec vraies données */}
+          {/* Section Innovation & TRL - Ordre inversé explication/projection */}
           <div className="bg-neutral-50 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-neutral-900 mb-4 flex items-center">
               <Lightbulb className="w-5 h-5 mr-2" />
@@ -200,9 +214,11 @@ export function VeilleModal({ data, isOpen, onClose }: VeilleModalProps) {
                 <h4 className="font-medium text-neutral-700 mb-2">Niveau TRL Actuel</h4>
                 <div className="flex items-center space-x-2 mb-2">
                   {data.innovation?.numero_TRL && data.innovation.numero_TRL > 0 ? (
-                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${getTRLColor(data.innovation.numero_TRL)}`}>
-                      TRL {data.innovation.numero_TRL}/9
-                    </span>
+                    <TRLInfo 
+                      trl={data.innovation.numero_TRL}
+                      explication={data.innovation.explication_TRL}
+                      projection={data.innovation.projection_TRL}
+                    />
                   ) : (
                     <span className="px-3 py-1 text-sm font-medium rounded-full bg-neutral-100 text-neutral-500">
                       TRL non précisé
@@ -212,12 +228,12 @@ export function VeilleModal({ data, isOpen, onClose }: VeilleModalProps) {
                 <p className="text-sm text-neutral-600">{data.innovation?.estimation_TRL || 'Non précisé'}</p>
               </div>
               <div>
-                <h4 className="font-medium text-neutral-700 mb-2">Projection TRL</h4>
-                <p className="text-neutral-600">{data.innovation?.projection_TRL || 'Non précisée'}</p>
-              </div>
-              <div className="md:col-span-2">
                 <h4 className="font-medium text-neutral-700 mb-2">Explication TRL</h4>
                 <p className="text-neutral-600">{data.innovation?.explication_TRL || 'Aucune explication disponible'}</p>
+              </div>
+              <div className="md:col-span-2">
+                <h4 className="font-medium text-neutral-700 mb-2">Projection TRL</h4>
+                <p className="text-neutral-600">{data.innovation?.projection_TRL || 'Non précisée'}</p>
               </div>
               {data.innovation?.application_secteur && data.innovation.application_secteur.length > 0 && (
                 <div className="md:col-span-2">

@@ -1,21 +1,31 @@
 'use client'
 
-import { Search, Filter, X, Plus, Calendar, Hash, MapPin, Tag, Cpu, Package, Wrench, Target, HelpCircle } from 'lucide-react'
+import { Search, Filter, X, Plus, Calendar, Hash, MapPin, Tag, Cpu, Package, Wrench, Target, HelpCircle, Save, Download } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import { VeilleData, FilterConfig, ActiveFilter, FilterState } from '@/types/veille'
 import { getSearchSuggestions } from '@/utils/searchUtils'
+import { NotificationToast } from './NotificationToast'
+import { applyFilters } from '@/utils/filterUtils'
 
 interface FilterPanelProps {
   filters: FilterState
   setFilters: (filters: FilterState) => void
   data: VeilleData[]
+  currentClient?: { id: string; name: string; slug: string } | null
 }
 
-export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
+export function FilterPanel({ filters, setFilters, data, currentClient }: FilterPanelProps) {
   const [showAddFilter, setShowAddFilter] = useState(false)
   const [showSearchHelp, setShowSearchHelp] = useState(false)
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [notification, setNotification] = useState<{
+    type: 'success' | 'error' | 'warning'
+    title: string
+    message?: string
+  } | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
+  const DATE_FIELD = 'article.date_publication'
 
   // Configuration de tous les filtres disponibles
   const availableFilters: FilterConfig[] = useMemo(() => [
@@ -142,7 +152,17 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
       }
     })
     
-    return Array.from(values).sort().map(value => ({ value, label: value }))
+    const arr = Array.from(values)
+      .map(value => ({ value, label: value }))
+    // Placer "Autres" toujours à la fin
+    arr.sort((a, b) => {
+      const aIsOther = a.label.toLowerCase() === 'autres'
+      const bIsOther = b.label.toLowerCase() === 'autres'
+      if (aIsOther && !bIsOther) return 1
+      if (!aIsOther && bIsOther) return -1
+      return a.label.localeCompare(b.label, 'fr', { sensitivity: 'base' })
+    })
+    return arr
   }
 
   const clearAllFilters = () => {
@@ -167,6 +187,56 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
       activeFilters: [...filters.activeFilters, newFilter]
     })
     setShowAddFilter(false)
+  }
+
+  // Upsert d'un filtre date spécifique (gte/lte)
+  const upsertDateFilter = (operator: 'gte' | 'lte', valueISO: string) => {
+    const existing = filters.activeFilters.find(
+      f => f.field === DATE_FIELD && f.type === 'date' && f.operator === operator
+    )
+    if (existing) {
+      updateFilter(existing.id, { value: valueISO })
+      return
+    }
+    // Créer le filtre si manquant
+    const newFilter: ActiveFilter = {
+      id: `date_${operator}_${Date.now()}`,
+      type: 'date',
+      label: 'Date de publication',
+      field: DATE_FIELD,
+      operator,
+      value: valueISO
+    }
+    setFilters({
+      ...filters,
+      activeFilters: [...filters.activeFilters, newFilter]
+    })
+  }
+
+  const removeDateFilter = (operator: 'gte' | 'lte') => {
+    setFilters({
+      ...filters,
+      activeFilters: filters.activeFilters.filter(
+        f => !(f.field === DATE_FIELD && f.type === 'date' && f.operator === operator)
+      )
+    })
+  }
+
+  // Presets rapides 7/30/90 jours
+  const applyDatePresetDays = (days: number) => {
+    const today = new Date()
+    const start = new Date()
+    start.setDate(today.getDate() - (days - 1))
+    const toISO = (d: Date) => d.toISOString().slice(0, 10)
+    upsertDateFilter('gte', toISO(start))
+    upsertDateFilter('lte', toISO(today))
+  }
+
+  const getDateFilterValue = (operator: 'gte' | 'lte') => {
+    const f = filters.activeFilters.find(
+      x => x.field === DATE_FIELD && x.type === 'date' && x.operator === operator
+    )
+    return (f?.value as string) || ''
   }
 
   const removeFilter = (filterId: string) => {
@@ -202,6 +272,90 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
   const handleSuggestionClick = (suggestion: string) => {
     setFilters({ ...filters, search: suggestion })
     setShowSuggestions(false)
+  }
+
+  const saveFiltersForClient = async () => {
+    if (!currentClient) {
+      setNotification({
+        type: 'warning',
+        title: 'Aucun portail sélectionné',
+        message: 'Veuillez d\'abord sélectionner un portail utilisateur.'
+      })
+      return
+    }
+
+    setIsSaving(true)
+    try {
+      const response = await fetch('/api/clients', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          slug: currentClient.slug,
+          default_filters: filters
+        })
+      })
+
+      if (response.ok) {
+        setNotification({
+          type: 'success',
+          title: 'Filtres sauvegardés',
+          message: `Les filtres ont été enregistrés pour le portail ${currentClient.name}.`
+        })
+      } else {
+        const error = await response.json()
+        setNotification({
+          type: 'error',
+          title: 'Erreur de sauvegarde',
+          message: error.error === 'invalid_password' 
+            ? 'Mot de passe incorrect.' 
+            : 'Impossible de sauvegarder les filtres. Veuillez réessayer.'
+        })
+      }
+    } catch (error) {
+      setNotification({
+        type: 'error',
+        title: 'Erreur de sauvegarde',
+        message: 'Une erreur inattendue est survenue.'
+      })
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const exportJson = () => {
+    const filtered = applyFilters(data, filters)
+    const exportItems = filtered.map(item => ({
+      titre: item.article?.titre || '',
+      url: item.article?.url || '',
+      date_publication: item.article?.date_publication || '',
+      description_courte: item.article?.description_courte || '',
+      image_url: (item as any).article?.image_url || '',
+      typologie_contenu: item.article?.typologie_contenu || '',
+      categorie: item.article?.categorie || [],
+      pays_source: item.article?.pays_source || '',
+      zone_geographique: item.article?.zone_geographique || '',
+      evaluation: item.evaluation || {},
+      innovation: item.innovation || {},
+      metadata: item.metadata || {}
+    }))
+    const blob = new Blob([
+      JSON.stringify({
+        export_generated_at: new Date().toISOString(),
+        filters_applied: filters,
+        count: exportItems.length,
+        items: exportItems
+      }, null, 2)
+    ], { type: 'application/json;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `veille_export_${new Date().toISOString().slice(0,10)}.json`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
   }
 
   const getFilterIcon = (type: string) => {
@@ -245,6 +399,24 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
           Filtres
         </h2>
         <div className="flex items-center gap-2">
+          {currentClient && (
+            <button
+              onClick={saveFiltersForClient}
+              disabled={isSaving}
+              className="text-sm text-green-600 hover:text-green-700 flex items-center px-3 py-1 border border-green-200 rounded-md hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Save className="w-4 h-4 mr-1" />
+              {isSaving ? 'Sauvegarde...' : 'Enregistrer pour ce portail'}
+            </button>
+          )}
+          <button
+            onClick={exportJson}
+            className="text-sm text-neutral-700 hover:text-neutral-900 flex items-center px-3 py-1 border border-neutral-200 rounded-md hover:bg-neutral-50"
+            title="Exporter les articles filtrés en JSON"
+          >
+            <Download className="w-4 h-4 mr-1" />
+            Export JSON (pour Synthèse IA)
+          </button>
           <button
             onClick={() => setShowAddFilter(!showAddFilter)}
             className="text-sm text-blue-600 hover:text-blue-700 flex items-center px-3 py-1 border border-blue-200 rounded-md hover:bg-blue-50"
@@ -363,6 +535,60 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
         </div>
       )}
 
+      {/* Presets rapides pour la date + entre-deux dates */}
+      <div className="mb-4 p-4 bg-neutral-50 rounded-lg border">
+        <h3 className="text-sm font-medium text-neutral-700 mb-3 flex items-center">
+          <Calendar className="w-4 h-4 mr-2" />
+          Date de publication
+        </h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          <button
+            onClick={() => applyDatePresetDays(7)}
+            className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
+          >7 jours</button>
+          <button
+            onClick={() => applyDatePresetDays(30)}
+            className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
+          >30 jours</button>
+          <button
+            onClick={() => applyDatePresetDays(90)}
+            className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
+          >90 jours</button>
+          {(getDateFilterValue('gte') || getDateFilterValue('lte')) && (
+            <button
+              onClick={() => { removeDateFilter('gte'); removeDateFilter('lte') }}
+              className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white text-neutral-600"
+            >Effacer dates</button>
+          )}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-neutral-600 w-16">Après le</span>
+            <input
+              type="date"
+              value={getDateFilterValue('gte')}
+              onChange={(e) => {
+                const v = e.target.value
+                if (v) upsertDateFilter('gte', v); else removeDateFilter('gte')
+              }}
+              className="flex-1 text-sm border border-neutral-300 rounded px-2 py-1"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-neutral-600 w-16">Avant le</span>
+            <input
+              type="date"
+              value={getDateFilterValue('lte')}
+              onChange={(e) => {
+                const v = e.target.value
+                if (v) upsertDateFilter('lte', v); else removeDateFilter('lte')
+              }}
+              className="flex-1 text-sm border border-neutral-300 rounded px-2 py-1"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Filtres actifs */}
       {filters.activeFilters.length > 0 && (
         <div className="space-y-3">
@@ -392,7 +618,7 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
           <select
                   value={filter.value}
                   onChange={(e) => updateFilter(filter.id, { value: e.target.value })}
-                  className="flex-1 text-sm border border-neutral-300 rounded px-2 py-1"
+                  className="flex-1 text-sm border border-neutral-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-neutral-50"
                 >
                   <option value="">Sélectionner...</option>
                   {getFilterOptions(filter.field).map(option => (
@@ -438,6 +664,16 @@ export function FilterPanel({ filters, setFilters, data }: FilterPanelProps) {
           <p className="text-sm">Aucun filtre actif</p>
           <p className="text-xs mt-1">Cliquez sur "Ajouter un filtre" pour commencer</p>
       </div>
+      )}
+
+      {/* Notification Toast */}
+      {notification && (
+        <NotificationToast
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
       )}
     </div>
   )

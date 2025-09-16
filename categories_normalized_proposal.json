@@ -1,0 +1,805 @@
+{
+  "proposal": [
+    {
+      "from": "Santé, Technologie",
+      "to": "sante, technologie"
+    },
+    {
+      "from": "Santé, Biotechnologie, Recherche médicale",
+      "to": "sante, biotechnologie, recherche medicale"
+    },
+    {
+      "from": "Santé, Technologie médicale",
+      "to": "sante, technologie medicale"
+    },
+    {
+      "from": "Santé, Biotechnologie",
+      "to": "sante, biotechnologie"
+    },
+    {
+      "from": "Aérospatial, Défense, Fabrication additive",
+      "to": "aerospatial, defense, fabrication additive"
+    },
+    {
+      "from": "Gouvernement, Cybersécurité",
+      "to": "gouvernement, cybersecurite"
+    },
+    {
+      "from": "santé, technologie médicale, fabrication additive",
+      "to": "sante, technologie medicale, fabrication additive"
+    },
+    {
+      "from": "Santé, Technologie, Fabrication additive",
+      "to": "sante, technologie, fabrication additive"
+    },
+    {
+      "from": "Santé, Technologie, Impression 3D",
+      "to": "sante, technologie, impression 3d"
+    },
+    {
+      "from": "santé, technologie médicale, impression 3D",
+      "to": "sante, technologie medicale, impression 3d"
+    },
+    {
+      "from": "Technologie, Impression 3D",
+      "to": "technologie, impression 3d"
+    },
+    {
+      "from": "Santé, Biotechnologie, Impression 3D",
+      "to": "sante, biotechnologie, impression 3d"
+    },
+    {
+      "from": "Éducation, Technologie",
+      "to": "education, technologie"
+    },
+    {
+      "from": "Éducation, Santé, Technologie",
+      "to": "education, sante, technologie"
+    },
+    {
+      "from": "Santé, Biotechnologie, Dispositifs médicaux",
+      "to": "sante, biotechnologie, dispositifs medicaux"
+    },
+    {
+      "from": "Santé, Dispositifs médicaux",
+      "to": "sante, dispositifs medicaux"
+    },
+    {
+      "from": "Impression 3D, Fabrication additive, Technologie",
+      "to": "impression 3d, fabrication additive, technologie"
+    },
+    {
+      "from": "Santé, Pharmaceutique",
+      "to": "sante, pharmaceutique"
+    },
+    {
+      "from": "Aéronautique & Défense, Additive Manufacturing, Industrie",
+      "to": "aeronautique & defense, additive manufacturing, industrie"
+    },
+    {
+      "from": "Industrie, Technologie",
+      "to": "industrie, technologie"
+    },
+    {
+      "from": "Technologie, Industrie",
+      "to": "technologie, industrie"
+    },
+    {
+      "from": "Défense, Aéronautique, Technologie",
+      "to": "defense, aeronautique, technologie"
+    },
+    {
+      "from": "Technologie, Fabrication additive",
+      "to": "technologie, fabrication additive"
+    },
+    {
+      "from": "Technologie, Finance",
+      "to": "technologie, finance"
+    },
+    {
+      "from": "Santé, Impression 3D, Biotechnologie",
+      "to": "sante, impression 3d, biotechnologie"
+    },
+    {
+      "from": "Aérospatial, Recherche scientifique",
+      "to": "aerospatial, recherche scientifique"
+    },
+    {
+      "from": "Technologie, Santé, Robotique",
+      "to": "technologie, sante, robotique"
+    },
+    {
+      "from": "Santé, Nutrition, Technologie",
+      "to": "sante, nutrition, technologie"
+    },
+    {
+      "from": "Santé, Technologie médicale, Neurochirurgie",
+      "to": "sante, technologie medicale, neurochirurgie"
+    },
+    {
+      "from": "Santé, Technologie médicale, Intelligence artificielle",
+      "to": "sante, technologie medicale, intelligence artificielle"
+    },
+    {
+      "from": "Santé, Technologie médicale, Finance",
+      "to": "sante, technologie medicale, finance"
+    },
+    {
+      "from": "Construction, Technologie, Environnement",
+      "to": "construction, technologie, environnement"
+    },
+    {
+      "from": "Technologie, Web",
+      "to": "technologie, web"
+    },
+    {
+      "from": "Construction, Immobilier, Technologie",
+      "to": "construction, immobilier, technologie"
+    },
+    {
+      "from": "Santé, Biotechnologie, Recherche biomédicale",
+      "to": "sante, biotechnologie, recherche biomedicale"
+    },
+    {
+      "from": "Santé, Recherche médicale, Biotechnologie, Pédiatrie",
+      "to": "sante, recherche medicale, biotechnologie, pediatrie"
+    },
+    {
+      "from": "Santé, Éducation, Technologie médicale",
+      "to": "sante, education, technologie medicale"
+    },
+    {
+      "from": "Santé, Technologies médicales",
+      "to": "sante, technologies medicales"
+    },
+    {
+      "from": "Biotechnologie, Santé",
+      "to": "biotechnologie, sante"
+    },
+    {
+      "from": "Marché, Technologie",
+      "to": "marche, technologie"
+    },
+    {
+      "from": "gouvernement, cybersécurité, administration publique",
+      "to": "gouvernement, cybersecurite, administration publique"
+    },
+    {
+      "from": "Technologie, Électronique",
+      "to": "technologie, electronique"
+    },
+    {
+      "from": "Technologie, Innovation, Industrie",
+      "to": "technologie, innovation, industrie"
+    },
+    {
+      "from": "Industrie, Innovation, Impression 3D",
+      "to": "industrie, innovation, impression 3d"
+    },
+    {
+      "from": "Défense, Fabrication additive, Sécurité",
+      "to": "defense, fabrication additive, securite"
+    },
+    {
+      "from": "Pharmaceutique, Santé, Biotechnologie",
+      "to": "pharmaceutique, sante, biotechnologie"
+    },
+    {
+      "from": "santé, biotechnologie, ingénierie tissulaire",
+      "to": "sante, biotechnologie, ingenierie tissulaire"
+    },
+    {
+      "from": "Technologie médicale, Éducation médicale, Impression 3D",
+      "to": "technologie medicale, education medicale, impression 3d"
+    },
+    {
+      "from": "Éducation, Technologie, Ingénierie",
+      "to": "education, technologie, ingenierie"
+    },
+    {
+      "from": "Fabrication additive, Économie circulaire, Technologie durable",
+      "to": "fabrication additive, economie circulaire, technologie durable"
+    },
+    {
+      "from": "Additive manufacturing, Sustainability",
+      "to": "additive manufacturing, sustainability"
+    },
+    {
+      "from": "fabrication additive, industrie, technologie",
+      "to": "fabrication additive, industrie, technologie"
+    },
+    {
+      "from": "santé, technologie médicale, neurochirurgie, orthopédie",
+      "to": "sante, technologie medicale, neurochirurgie, orthopedie"
+    },
+    {
+      "from": "Innovation, Industrie, Défense",
+      "to": "innovation, industrie, defense"
+    },
+    {
+      "from": "Optique, Technologie, Santé",
+      "to": "optique, technologie, sante"
+    },
+    {
+      "from": "santé, biotechnologie, recherche biomédicale, dispositifs médicaux",
+      "to": "sante, biotechnologie, recherche biomedicale, dispositifs medicaux"
+    },
+    {
+      "from": "Environnement, Gestion des déchets, Bioplastiques",
+      "to": "environnement, gestion des dechets, bioplastiques"
+    },
+    {
+      "from": "Santé, Aérospatial, Automobile, Construction, Biens de consommation, Éducation, Recherche",
+      "to": "sante, aerospatial, automobile, construction, biens de consommation, education, recherche"
+    },
+    {
+      "from": "Santé publique, Sécurité sanitaire, Gestion de crise",
+      "to": "sante publique, securite sanitaire, gestion de crise"
+    },
+    {
+      "from": "santé, éducation",
+      "to": "sante, education"
+    },
+    {
+      "from": "Santé publique, Gouvernance locale, Développement urbain",
+      "to": "sante publique, gouvernance locale, developpement urbain"
+    },
+    {
+      "from": "santé publique",
+      "to": "sante publique"
+    },
+    {
+      "from": "santé publique, politique de santé, sécurité sanitaire",
+      "to": "sante publique, politique de sante, securite sanitaire"
+    },
+    {
+      "from": "Santé publique, Oncologie pédiatrique, Organisations internationales",
+      "to": "sante publique, oncologie pediatrique, organisations internationales"
+    },
+    {
+      "from": "Additive manufacturing, Post-processing",
+      "to": "additive manufacturing, post processing"
+    },
+    {
+      "from": "Technologie, Santé, Objets connectés, Dispositifs médicaux",
+      "to": "technologie, sante, objets connectes, dispositifs medicaux"
+    },
+    {
+      "from": "Additive Manufacturing, Industrie, Logiciels",
+      "to": "additive manufacturing, industrie, logiciels"
+    },
+    {
+      "from": "Santé, Biotechnologie, Électronique",
+      "to": "sante, biotechnologie, electronique"
+    },
+    {
+      "from": "Santé, Recherche, Enseignement supérieur, Neurologie",
+      "to": "sante, recherche, enseignement superieur, neurologie"
+    },
+    {
+      "from": "Enseignement supérieur, Conformité légale",
+      "to": "enseignement superieur, conformite legale"
+    },
+    {
+      "from": "Impression 3D, Sécurité, Politiques publiques",
+      "to": "impression 3d, securite, politiques publiques"
+    },
+    {
+      "from": "Énergie, Fabrication additive, Industrie lourde",
+      "to": "energie, fabrication additive, industrie lourde"
+    },
+    {
+      "from": "Impression 3D, Fonderie, Industrialisation",
+      "to": "impression 3d, fonderie, industrialisation"
+    },
+    {
+      "from": "Technologie, Design, Architecture, Fabrication industrielle, Arts",
+      "to": "technologie, design, architecture, fabrication industrielle, arts"
+    },
+    {
+      "from": "Technologie, Design industriel, Fabrication additive",
+      "to": "technologie, design industriel, fabrication additive"
+    },
+    {
+      "from": "Industrie, Énergie renouvelable, Fabrication additive",
+      "to": "industrie, energie renouvelable, fabrication additive"
+    },
+    {
+      "from": "santé, dispositifs médicaux, fabrication industrielle",
+      "to": "sante, dispositifs medicaux, fabrication industrielle"
+    },
+    {
+      "from": "Aéronautique & Défense, Industrie manufacturière, Technologie",
+      "to": "aeronautique & defense, industrie manufacturiere, technologie"
+    },
+    {
+      "from": "Fabrication additive, Défense, Industrie maritime, Aérospatial",
+      "to": "fabrication additive, defense, industrie maritime, aerospatial"
+    },
+    {
+      "from": "Défense, Fabrication additive, Maritime industrielle",
+      "to": "defense, fabrication additive, maritime industrielle"
+    },
+    {
+      "from": "Technologie, Fabrication additive, Finance",
+      "to": "technologie, fabrication additive, finance"
+    },
+    {
+      "from": "Défense, Fabrication additive, Métallurgie",
+      "to": "defense, fabrication additive, metallurgie"
+    },
+    {
+      "from": "Défense, Fabrication additive, Industrie navale",
+      "to": "defense, fabrication additive, industrie navale"
+    },
+    {
+      "from": "Aérospatiale, Énergie, Métrologie, Manufacture additive",
+      "to": "aerospatiale, energie, metrologie, manufacture additive"
+    },
+    {
+      "from": "Environnement, Santé, Climat",
+      "to": "environnement, sante, climat"
+    },
+    {
+      "from": "fabrication additive, aérospatial, santé",
+      "to": "fabrication additive, aerospatial, sante"
+    },
+    {
+      "from": "Santé, Recherche, Éducation, Technologie",
+      "to": "sante, recherche, education, technologie"
+    },
+    {
+      "from": "Défense, Naval, Aéronautique, Fabrication avancée",
+      "to": "defense, naval, aeronautique, fabrication avancee"
+    },
+    {
+      "from": "Aérospatial et défense, Fabrication additive, Impression 3D",
+      "to": "aerospatial et defense, fabrication additive, impression 3d"
+    },
+    {
+      "from": "Aérospatial, Défense",
+      "to": "aerospatial, defense"
+    },
+    {
+      "from": "Santé, Technologie, Intelligence artificielle",
+      "to": "sante, technologie, intelligence artificielle"
+    },
+    {
+      "from": "Recherche scientifique, Santé, Médecine, Neurologie, Technologie médicale",
+      "to": "recherche scientifique, sante, medecine, neurologie, technologie medicale"
+    },
+    {
+      "from": "Recherche & Développement, Fabrication additive, Ingénierie civile, Enseignement supérieur",
+      "to": "recherche & developpement, fabrication additive, ingenierie civile, enseignement superieur"
+    },
+    {
+      "from": "Recherche, Fabrication additive, Matériaux, Technologie",
+      "to": "recherche, fabrication additive, materiaux, technologie"
+    },
+    {
+      "from": "Construction, Technologie, Infrastructures",
+      "to": "construction, technologie, infrastructures"
+    },
+    {
+      "from": "Santé, Dispositifs médicaux, Analyse de marché",
+      "to": "sante, dispositifs medicaux, analyse de marche"
+    },
+    {
+      "from": "Santé, Dispositifs médicaux, Imagerie médicale, Étude de marché",
+      "to": "sante, dispositifs medicaux, imagerie medicale, etude de marche"
+    },
+    {
+      "from": "Biopharmaceutique, Dispositifs médicaux, Pharmaceutique",
+      "to": "biopharmaceutique, dispositifs medicaux, pharmaceutique"
+    },
+    {
+      "from": "santé, éducation, recherche, infrastructure, gouvernement local",
+      "to": "sante, education, recherche, infrastructure, gouvernement local"
+    },
+    {
+      "from": "Santé, Dentisterie, Fabrication additive",
+      "to": "sante, dentisterie, fabrication additive"
+    },
+    {
+      "from": "Défense, Fabrication additive",
+      "to": "defense, fabrication additive"
+    },
+    {
+      "from": "Technologie, Défense",
+      "to": "technologie, defense"
+    },
+    {
+      "from": "Défense, Fabrication",
+      "to": "defense, fabrication"
+    },
+    {
+      "from": "Défense, Fabrication additive, Éducation",
+      "to": "defense, fabrication additive, education"
+    },
+    {
+      "from": "Agroalimentaire, Biotechnologie, Recherche universitaire",
+      "to": "agroalimentaire, biotechnologie, recherche universitaire"
+    },
+    {
+      "from": "Défense, Technologie, Manufacturing",
+      "to": "defense, technologie, manufacturing"
+    },
+    {
+      "from": "Défense, Fabrication industrielle",
+      "to": "defense, fabrication industrielle"
+    },
+    {
+      "from": "Soins de santé, Technologie médicale",
+      "to": "soins de sante, technologie medicale"
+    },
+    {
+      "from": "DIY & Maker, Électronique, Impression 3D",
+      "to": "diy & maker, electronique, impression 3d"
+    },
+    {
+      "from": "Pharmaceutique, Biotechnologie, Santé, Fabrication additive",
+      "to": "pharmaceutique, biotechnologie, sante, fabrication additive"
+    },
+    {
+      "from": "Biopharmaceutique, Fabrication, Dispositifs médicaux",
+      "to": "biopharmaceutique, fabrication, dispositifs medicaux"
+    },
+    {
+      "from": "Cyclisme, Fabrication additive, Sport",
+      "to": "cyclisme, fabrication additive, sport"
+    },
+    {
+      "from": "Santé, Santé publique, Gouvernement",
+      "to": "sante, sante publique, gouvernement"
+    },
+    {
+      "from": "Impression 3D, Optique & Lunetterie, Manufacturing, Technologie",
+      "to": "impression 3d, optique & lunetterie, manufacturing, technologie"
+    },
+    {
+      "from": "Santé, Orthopédie, Dispositifs médicaux",
+      "to": "sante, orthopedie, dispositifs medicaux"
+    },
+    {
+      "from": "Bioplastiques, Emballage, Textiles, Agriculture, Santé, Automobile",
+      "to": "bioplastiques, emballage, textiles, agriculture, sante, automobile"
+    },
+    {
+      "from": "Aéronautique, Fabrication additive, Ingénierie des matériaux",
+      "to": "aeronautique, fabrication additive, ingenierie des materiaux"
+    },
+    {
+      "from": "Fabrication additive, Céramique, Aérospatiale, Dispositifs médicaux, Éclairage",
+      "to": "fabrication additive, ceramique, aerospatiale, dispositifs medicaux, eclairage"
+    },
+    {
+      "from": "Chirurgie, Technologies médicales",
+      "to": "chirurgie, technologies medicales"
+    },
+    {
+      "from": "fabrication additive, aérospatial, défense, industrie",
+      "to": "fabrication additive, aerospatial, defense, industrie"
+    },
+    {
+      "from": "Matériaux, Ingénierie, Biotechnologie",
+      "to": "materiaux, ingenierie, biotechnologie"
+    },
+    {
+      "from": "Électronique, Environnement, Recyclage",
+      "to": "electronique, environnement, recyclage"
+    },
+    {
+      "from": "Aérospatial, Énergie, Métallurgie",
+      "to": "aerospatial, energie, metallurgie"
+    },
+    {
+      "from": "Biotechnology, Biomedical Engineering, Healthcare, Pharmaceutical Research",
+      "to": "biotechnology, biomedical engineering, healthcare, pharmaceutical research"
+    },
+    {
+      "from": "Santé, Orthodontie, Chirurgie dentaire",
+      "to": "sante, orthodontie, chirurgie dentaire"
+    },
+    {
+      "from": "Santé, Pharmacologie, Recherche médicale",
+      "to": "sante, pharmacologie, recherche medicale"
+    },
+    {
+      "from": "Dispositifs médicaux, Réhabilitation, Recherche clinique",
+      "to": "dispositifs medicaux, rehabilitation, recherche clinique"
+    },
+    {
+      "from": "Santé, Recherche médicale",
+      "to": "sante, recherche medicale"
+    },
+    {
+      "from": "Technologie, Impression 3D, Électronique",
+      "to": "technologie, impression 3d, electronique"
+    },
+    {
+      "from": "Média spécialisé, Technologie, Impression 3D",
+      "to": "media specialise, technologie, impression 3d"
+    },
+    {
+      "from": "Électronique grand public, Robotique, Santé, Prothèses",
+      "to": "electronique grand public, robotique, sante, protheses"
+    },
+    {
+      "from": "Additive Manufacturing, Materials Science, Biomedical Engineering",
+      "to": "additive manufacturing, materials science, biomedical engineering"
+    },
+    {
+      "from": "Satellite communications, Additive Manufacturing, Aérospatial, Technologie",
+      "to": "satellite communications, additive manufacturing, aerospatial, technologie"
+    },
+    {
+      "from": "Industrie, Technologie, Additive Manufacturing",
+      "to": "industrie, technologie, additive manufacturing"
+    },
+    {
+      "from": "Fabrication additive, Sous-traitance industrielle, Métallurgie, Plasturgie, Génie de précision",
+      "to": "fabrication additive, sous traitance industrielle, metallurgie, plasturgie, genie de precision"
+    },
+    {
+      "from": "Santé, Électronique, Optique, Impression 3D, Chimie durable",
+      "to": "sante, electronique, optique, impression 3d, chimie durable"
+    },
+    {
+      "from": "Santé, Technologie médicale, Robotique",
+      "to": "sante, technologie medicale, robotique"
+    },
+    {
+      "from": "Santé, Biomatériaux, Impression 3D médicale",
+      "to": "sante, biomateriaux, impression 3d medicale"
+    },
+    {
+      "from": "Fabrication additive, Transport, Industrie",
+      "to": "fabrication additive, transport, industrie"
+    },
+    {
+      "from": "Fabrication additive, Transport, Automobile, Aéronautique",
+      "to": "fabrication additive, transport, automobile, aeronautique"
+    },
+    {
+      "from": "Pharmaceutique, Analyse process, Impression 3D",
+      "to": "pharmaceutique, analyse process, impression 3d"
+    },
+    {
+      "from": "Aéronautique & Espace, Industrie, Fabrication additive",
+      "to": "aeronautique & espace, industrie, fabrication additive"
+    },
+    {
+      "from": "Robotique, Santé, Fabrication additive, Wearable technology",
+      "to": "robotique, sante, fabrication additive, wearable technology"
+    },
+    {
+      "from": "Fabrication additive, Automobile, Industrie, Services d'impression 3D, Dentaire",
+      "to": "fabrication additive, automobile, industrie, services d'impression 3d, dentaire"
+    },
+    {
+      "from": "Fabrication additive, Défense, Aérospatial, Normes et certification",
+      "to": "fabrication additive, defense, aerospatial, normes et certification"
+    },
+    {
+      "from": "Technologie, Fabrication additive, Juridique",
+      "to": "technologie, fabrication additive, juridique"
+    },
+    {
+      "from": "Technologie, Finance, Investissement",
+      "to": "technologie, finance, investissement"
+    },
+    {
+      "from": "éducation, recherche, infrastructure",
+      "to": "education, recherche, infrastructure"
+    },
+    {
+      "from": "Fabrication additive, Impression 3D, Industrie manufacturière",
+      "to": "fabrication additive, impression 3d, industrie manufacturiere"
+    },
+    {
+      "from": "Santé, Impression 3D, Biomédecine",
+      "to": "sante, impression 3d, biomedecine"
+    },
+    {
+      "from": "Fabrication additive, Industrie manufacturière",
+      "to": "fabrication additive, industrie manufacturiere"
+    },
+    {
+      "from": "technologie dentaire, fabrication additive, dispositifs médicaux",
+      "to": "technologie dentaire, fabrication additive, dispositifs medicaux"
+    },
+    {
+      "from": "Technologie, Santé / Dentisterie, Fabrication additive",
+      "to": "technologie, sante / dentisterie, fabrication additive"
+    },
+    {
+      "from": "Technologie médicale, Impression 3D",
+      "to": "technologie medicale, impression 3d"
+    },
+    {
+      "from": "Technologie, Santé dentaire",
+      "to": "technologie, sante dentaire"
+    },
+    {
+      "from": "Soins dentaires, Technologie",
+      "to": "soins dentaires, technologie"
+    },
+    {
+      "from": "Impression 3D, Dentisterie, Additive manufacturing",
+      "to": "impression 3d, dentisterie, additive manufacturing"
+    },
+    {
+      "from": "Affaires, Technologie, Santé",
+      "to": "affaires, technologie, sante"
+    },
+    {
+      "from": "Santé, Dispositifs médicaux, Biotechnologies, Pharmaceutique",
+      "to": "sante, dispositifs medicaux, biotechnologies, pharmaceutique"
+    },
+    {
+      "from": "Dispositifs médicaux, Santé, Orthopédie",
+      "to": "dispositifs medicaux, sante, orthopedie"
+    },
+    {
+      "from": "Aéronautique et spatiale, Recherche scientifique",
+      "to": "aeronautique et spatiale, recherche scientifique"
+    },
+    {
+      "from": "Biotechnologie, Médecine régénérative, Aérospatial",
+      "to": "biotechnologie, medecine regenerative, aerospatial"
+    },
+    {
+      "from": "Santé, Dentisterie, Implantologie",
+      "to": "sante, dentisterie, implantologie"
+    },
+    {
+      "from": "Matériaux avancés, Aérospatiale, Électronique, Santé, Défense",
+      "to": "materiaux avances, aerospatiale, electronique, sante, defense"
+    },
+    {
+      "from": "santé, énergie, technologie",
+      "to": "sante, energie, technologie"
+    },
+    {
+      "from": "Santé, Technologie, Politique publique",
+      "to": "sante, technologie, politique publique"
+    },
+    {
+      "from": "Métrologie, Automatisation, Micro-engineering",
+      "to": "metrologie, automatisation, micro engineering"
+    },
+    {
+      "from": "Automobile, Technologie, Santé, Design d’intérieur",
+      "to": "automobile, technologie, sante, design d’interieur"
+    },
+    {
+      "from": "Santé, Technologie, Recherche de marché",
+      "to": "sante, technologie, recherche de marche"
+    },
+    {
+      "from": "Santé, Technologies médicales, Impression 3D",
+      "to": "sante, technologies medicales, impression 3d"
+    },
+    {
+      "from": "Photonique, Imagerie, Santé, Automatisation industrielle, Technologies quantiques",
+      "to": "photonique, imagerie, sante, automatisation industrielle, technologies quantiques"
+    },
+    {
+      "from": "Énergie, Maintenance industrielle, Fabrication additive",
+      "to": "energie, maintenance industrielle, fabrication additive"
+    },
+    {
+      "from": "packaging, manufacturing, boisson",
+      "to": "packaging, manufacturing, boisson"
+    },
+    {
+      "from": "Éducation, Santé, Ingénierie biomédicale",
+      "to": "education, sante, ingenierie biomedicale"
+    },
+    {
+      "from": "Éducation supérieure, Santé, Technologie médicale",
+      "to": "education superieure, sante, technologie medicale"
+    },
+    {
+      "from": "Additive manufacturing, Ingénierie, Matériaux industriels",
+      "to": "additive manufacturing, ingenierie, materiaux industriels"
+    },
+    {
+      "from": "Santé / Biomédical, Automobile, Aérospatial, Matériaux",
+      "to": "sante / biomedical, automobile, aerospatial, materiaux"
+    },
+    {
+      "from": "Fabrication additive métallique, Services industriels",
+      "to": "fabrication additive metallique, services industriels"
+    },
+    {
+      "from": "mode, impression 3D, durabilité",
+      "to": "mode, impression 3d, durabilite"
+    },
+    {
+      "from": "robotique, santé, wearable, fabrication additive",
+      "to": "robotique, sante, wearable, fabrication additive"
+    },
+    {
+      "from": "Hôpitaux et soins de santé, Ingénierie",
+      "to": "hopitaux et soins de sante, ingenierie"
+    },
+    {
+      "from": "biotechnologie, gestion des déchets, dispositifs médicaux, traitement de l’eau",
+      "to": "biotechnologie, gestion des dechets, dispositifs medicaux, traitement de l’eau"
+    },
+    {
+      "from": "Santé, Recherche médicale, Pédiatrie",
+      "to": "sante, recherche medicale, pediatrie"
+    },
+    {
+      "from": "Santé, Recherche médicale, Neurosciences",
+      "to": "sante, recherche medicale, neurosciences"
+    },
+    {
+      "from": "Recherche spatiale, Fabrication additive, Technologie",
+      "to": "recherche spatiale, fabrication additive, technologie"
+    },
+    {
+      "from": "Fabrication additive, Aéronautique, Médical, Automobile, Ingénierie de précision",
+      "to": "fabrication additive, aeronautique, medical, automobile, ingenierie de precision"
+    },
+    {
+      "from": "Industrie manufacturière avancée, Technologie, Énergie durable",
+      "to": "industrie manufacturiere avancee, technologie, energie durable"
+    },
+    {
+      "from": "Industrie, Manufacturing, PME, Infrastructure",
+      "to": "industrie, manufacturing, pme, infrastructure"
+    },
+    {
+      "from": "Fabrication additive, Impression 3D, Industrie manufacturière, DIY/Maker",
+      "to": "fabrication additive, impression 3d, industrie manufacturiere, diy/maker"
+    },
+    {
+      "from": "Pharmaceutique, Biotechnologie, Dispositifs médicaux, Recherche clinique",
+      "to": "pharmaceutique, biotechnologie, dispositifs medicaux, recherche clinique"
+    },
+    {
+      "from": "additive manufacturing, défense, industrie navale",
+      "to": "additive manufacturing, defense, industrie navale"
+    },
+    {
+      "from": "Neurosciences, Électronique, Biotechnologie",
+      "to": "neurosciences, electronique, biotechnologie"
+    },
+    {
+      "from": "Santé, Recherche biomédicale, Immunologie",
+      "to": "sante, recherche biomedicale, immunologie"
+    },
+    {
+      "from": "robotique, intelligence artificielle, recherche scientifique",
+      "to": "robotique, intelligence artificielle, recherche scientifique"
+    },
+    {
+      "from": "Santé, Éducation, Technologie",
+      "to": "sante, education, technologie"
+    },
+    {
+      "from": "Dentisterie, Chirurgie maxillo-faciale, Technologie médicale",
+      "to": "dentisterie, chirurgie maxillo faciale, technologie medicale"
+    },
+    {
+      "from": "Aéronautique, Dispositifs médicaux, Fabrication additive, Matériaux",
+      "to": "aeronautique, dispositifs medicaux, fabrication additive, materiaux"
+    },
+    {
+      "from": "Aéronautique, Automobile, Médical, Pétrole & Gaz, Design industriel",
+      "to": "aeronautique, automobile, medical, petrole & gaz, design industriel"
+    },
+    {
+      "from": "immobilier, hôtellerie, construction, technologie, bien-être",
+      "to": "immobilier, hotellerie, construction, technologie, bien etre"
+    },
+    {
+      "from": "Agroalimentaire, Biotechnologie",
+      "to": "agroalimentaire, biotechnologie"
+    }
+  ],
+  "guideline": "Modifiez to selon vos regroupements souhaités"
+}

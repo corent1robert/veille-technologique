@@ -8,6 +8,29 @@ Salut Arthur,
 
 J'espère que tu vas bien ! Je reviens vers toi avec de bonnes nouvelles concernant le projet.
 
+Suite à notre dernier échange (et ton ajout du filtre « date »), j'ai intégré les demandes et sécurisé le pipeline.
+
+## 🧭 Ce que j'ai retenu et les priorités
+
+Ton outil de veille a fait bonne impression chez Sanofi. Les axes d'évolution que j'ai consolidés sont les suivants :
+
+- **Enrichissement des données**
+  - Intégrer l'ancienne base avec le contenu complet des articles
+  - Normaliser et dédupliquer les catégories avec GPT pour éviter la redondance
+  - Maintenir un système dynamique capable d'identifier de nouvelles catégories
+
+- **Améliorations visuelles et UX**
+  - Génération d'images IA par article (à partir du titre + description)
+  - Traduction des titres en français et affichage complet
+  - Inversion de l'ordre Explication/Projection TRL + pop-up explicatif des niveaux TRL
+  - Icônes/symboles identifiables selon la typologie de contenu
+
+- **Fonctionnalités avancées**
+  - Recherche booléenne avancée (déjà livrée)
+  - Filtre par date (déjà ajouté)
+  - Sauvegarde des recherches/veilles
+  - Génération automatique de synthèses hebdomadaires par IA, orientées client
+
 ## ✅ **Correction du scénario Make.com**
 
 Le scénario Make.com qui s'était arrêté suite aux erreurs consécutives a été **entièrement corrigé et fonctionne désormais parfaitement**. J'ai identifié et résolu les problèmes qui causaient les dysfonctionnements. L'automatisation reprendra normalement son cycle de traitement des articles.
@@ -53,6 +76,11 @@ Pour la suite, nous pourrons ajouter dans une V2 :
 - Envoi par email des résultats
 - Système d'alerte automatique (veille)
 - Recherche dans les critères spécifiques (entreprises citées, secteurs d'activité, etc.)
+
+### **Approche progressive (itérative)**
+- V2.1: Sauvegarde des recherches + envoi manuel par email depuis l'interface
+- V2.2: Alerte/veille automatique planifiée (hebdo) + gabarits clients
+- V2.3: Enrichissement de l’ancienne base + harmonisation des catégories via ChatGPT
 
 ## 🌐 **Accès à la plateforme**
 

@@ -18,6 +18,36 @@ export function applyFilters(data: VeilleData[], filters: FilterState): VeilleDa
         return false
       }
 
+      // Gestion spécifique des dates
+      if (filter.type === 'date') {
+        const itemTime = new Date(fieldValue as any).getTime()
+        const filterDate = new Date(filter.value as any)
+        if (isNaN(itemTime) || isNaN(filterDate.getTime())) {
+          return false
+        }
+
+        // Pour l'opérateur 'eq', on compare sur la journée entière (00:00 -> 23:59:59)
+        const filterStart = new Date(filterDate)
+        filterStart.setHours(0, 0, 0, 0)
+        const filterEnd = new Date(filterDate)
+        filterEnd.setHours(23, 59, 59, 999)
+
+        switch (filter.operator) {
+          case 'eq':
+            return itemTime >= filterStart.getTime() && itemTime <= filterEnd.getTime()
+          case 'gt':
+            return itemTime > filterEnd.getTime()
+          case 'gte':
+            return itemTime >= filterStart.getTime()
+          case 'lt':
+            return itemTime < filterStart.getTime()
+          case 'lte':
+            return itemTime <= filterEnd.getTime()
+          default:
+            return true
+        }
+      }
+
       switch (filter.operator) {
         case 'eq':
           if (Array.isArray(fieldValue)) {

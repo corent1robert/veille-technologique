@@ -4,6 +4,7 @@ export interface VeilleData {
     titre?: string
     description_courte?: string
     description_longue?: string
+    image_url?: string
     mots_cles?: string[]
     categorie?: string[]
     date_publication?: string
