@@ -9,69 +9,146 @@ const AIRTABLE_CLIENTS_TABLE = process.env.AIRTABLE_CLIENTS_TABLE || 'Clients'
 
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID)
 
+function normalizeLabel(input?: string): string {
+  if (!input) return ''
+  let x = String(input).trim().toLowerCase()
+  x = x.normalize('NFD').replace(/[\u0300-\u036f]+/g, '')
+  x = x.replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim()
+  if (x === 'ia' || x === 'ai') x = 'intelligence artificielle'
+  if (x === 'biotech') x = 'biotechnologie'
+  if (x === 'etude' || x === 'etudes') x = 'étude'
+  if (x === 'video') x = 'vidéo'
+  if (x === 'news') x = 'article'
+  return x
+}
+
+function groupCategory(label: string): string {
+  const l = normalizeLabel(label)
+  if (!l) return 'Autres'
+  if (/actualite|actualité/.test(l)) return 'Actualité'
+  if (/(fusion|acquisition|m&a|rachat|merger|acquisitions)/.test(l)) return 'Fusions & Acquisitions'
+  if (/(levee de fonds|levée de fonds|financement|fundraising|serie [ab]|seed|capital risque|venture)/.test(l)) return 'Financement'
+  if (/(partenariat|alliance|collaboration)/.test(l)) return 'Partenariats'
+  if (/(reglementation|réglementation|conformite|compliance|norme|certification)/.test(l)) return 'Réglementation / Conformité'
+  if (/(produit|lancement produit|nouveau produit|release)/.test(l)) return 'Produit / Lancement'
+  if (/(r&d|recherche et developpement|recherche & developpement|recherche|developpement)/.test(l)) return 'R&D'
+  if (/(appel d offres|marches publics|marchés publics|tender|procurement)/.test(l)) return 'Marchés publics'
+  if (/(strategie|stratégie|gouvernance|restructuration)/.test(l)) return 'Stratégie / Gouvernance'
+  if (/(evenement|événement|conference|salon|webinar)/.test(l)) return 'Événements'
+  if (/sante|pharma|pharmaceutique|medical|medecine|médecine/.test(l)) return 'Santé / Pharma'
+  if (/agro|alimentaire|agriculture|agri/.test(l)) return 'Agroalimentaire'
+  if (/energie|énergies|energies|renouvelable|hydrogene|hydrogen/.test(l)) return 'Énergie'
+  if (/transport|mobilite|automobile|aeronautique|aero/.test(l)) return 'Transport / Mobilité'
+  if (/defense|défense|militaire|securite|sécurite/.test(l)) return 'Défense / Sécurité'
+  if (/environnement|climat|recyclage|dechet|dechets|durable|soutenable|ecologie/.test(l)) return 'Environnement'
+  if (/(construction|batiment|bim|chantier|btp)/.test(l)) return 'Construction / BTP'
+  if (/education|enseignement|edtech|universite|éducation/.test(l)) return 'Éducation'
+  if (/finance|banque|fintech|assurance|investissement/.test(l)) return 'Finance'
+  if (/retail|commerce|e commerce|distribution/.test(l)) return 'Commerce / Retail'
+  if (/spatial|espace|satellite/.test(l)) return 'Spatial'
+  if (/(tic|it|numerique|informatique|digital|logiciel|software)/.test(l)) return 'Numérique / TIC'
+  if (/(intelligence artificielle|machine learning|apprentissage automatique|deep learning)/.test(l)) return 'IA / ML'
+  if (/(robotique|robot|cobot)/.test(l)) return 'Robotique'
+  if (/(iot|capteur|capteurs|internet des objets)/.test(l)) return 'IoT / Capteurs'
+  if (/(impression 3d|fabrication additive|additif|additive|3d printing|bioprinting|bioimpression|biofabrication)/.test(l)) return 'Impression 3D'
+  if (/(materiaux|materiau|materiel avanc|materiaux avance|composite|polymere|ceramique|metal)/.test(l)) return 'Matériaux avancés'
+  if (/(biotechnologie|biotech|biologie synthetique)/.test(l)) return 'Biotechnologies'
+  if (/(cybersecurite|securite informatique|cyber)/.test(l)) return 'Cybersécurité'
+  if (/(cloud|edge)/.test(l)) return 'Cloud / Edge'
+  if (/blockchain|web3|crypto/.test(l)) return 'Blockchain / Web3'
+  if (/(realite augmentee|realite virtuelle|ar | vr|metaverse)/.test(l)) return 'AR / VR'
+  if (/(electronique|web|internet|telecom|telecommunications|bureautique)/.test(l)) return 'Numérique / TIC'
+  if (/(manufacturing|fabrication|industrie manufacturiere|supply chain|logistique|usina|fonderie|plasturgie|procedes)/.test(l)) return 'Industrie'
+  return 'Autres'
+}
+
+function groupTypologie(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(actualite|actualité|news|briefing|digest|br[eè]ve)/.test(l)) return 'Actualité'
+  if (/(analyse|review|meta analyse|m[eé]ta analyse|synth[eè]se)/.test(l)) return 'Analyse'
+  if (/(rapport|report|livre blanc|white paper)/.test(l)) return 'Rapport'
+  if (/(etude|study|publication|paper|revue|recherche)/.test(l)) return 'Étude'
+  if (/(annonce|nouvelle|lancement)/.test(l)) return 'Annonce'
+  if (/(communique|press release)/.test(l)) return 'Communiqué'
+  if (/(article|blog|post)/.test(l)) return 'Article'
+  if (/(video|vidéo|webinar|podcast)/.test(l)) return 'Vidéo'
+  if (/(tutoriel|guide|how to|tutorial)/.test(l)) return 'Tutoriel'
+  if (/(notice|manuel|documentation|specification|sp[eé]cification)/.test(l)) return 'Guide / Notice'
+  if (/(interview|entretien)/.test(l)) return 'Interview'
+  if (/(tribune|opinion|editorial|éditorial|commentaire)/.test(l)) return 'Opinion / Tribune'
+  if (/(alerte|avertissement|securite|sécurité)/.test(l)) return 'Alerte sécurité'
+  if (/(offre d emploi|recrutement|job|poste|description de poste)/.test(l)) return 'Offre d’emplois'
+  if (/(evenement|événement|compte rendu d evenement|conference|salon)/.test(l)) return 'Événement'
+  if (/(levee de fonds|levée de fonds|financement|fundraising)/.test(l)) return 'Financement'
+  if (/(page d erreur|erreur http|404|protection anti bot|login|politique de confidentialite|confidentialite)/.test(l)) return 'Technique / Infrastructure'
+  if (/(brevet|patent)/.test(l)) return 'Brevet'
+  return 'Autres'
+}
+
 function mapRecordToData(record: any) {
-  const fields = record.fields
-  return {
-    article: {
-      url: fields['URL'] || '',
-      titre: fields['Titre'] || '',
-      description_courte: fields['Description Courte'] || '',
-      description_longue: fields['Description Longue'] || '',
+      const fields = record.fields
+      return {
+        article: {
+      url: fields['URL'] || fields['Url'] || fields['url'] || '',
+      titre: fields['Titre'] || fields['Titre article'] || fields['title'] || fields['Title'] || fields['Nom'] || fields['name'] || '',
+          description_courte: fields['Description Courte'] || '',
+          description_longue: fields['Description Longue'] || '',
       image_url: (Array.isArray(fields['Image']) && fields['Image'][0]?.url) || fields['Image'] || fields['image_url'] || '',
-      mots_cles: Array.isArray(fields['Mots cles']) ? fields['Mots cles'] :
-                typeof fields['Mots cles'] === 'string' ? [fields['Mots cles']] : [],
-      categorie: Array.isArray(fields['Categorie']) ? fields['Categorie'] :
-                typeof fields['Categorie'] === 'string' ? [fields['Categorie']] : [],
-      date_publication: fields['date publication'] || '',
-      auteur: fields['Auteur'] || '',
-      source: fields['Nom de la source'] || '',
-      entreprises_citees: Array.isArray(fields['Entreprises citées']) ? fields['Entreprises citées'] :
-                        typeof fields['Entreprises citées'] === 'string' ? [fields['Entreprises citées']] : [],
-      citations: Array.isArray(fields['Citation (lien dans l\'article)']) ? fields['Citation (lien dans l\'article)'] :
-                typeof fields['Citation (lien dans l\'article)'] === 'string' ? [fields['Citation (lien dans l\'article)']] : [],
-      pays_source: fields['Pays source'] || '',
-      zone_geographique: fields['Zone geographique'] || '',
-      typologie_source: fields['Typologie de source'] || '',
-      typologie_contenu: fields['Typologie de contenu'] || ''
-    },
-    evaluation: {
-      pertinence: fields['Pertinence'] || fields['pertinence'] || 0,
-      pertinence_explication: fields['Pertinence_explication'] || fields['Pertinence explication'] || fields['pertinence_explication'] || '',
-      fiabilite: fields['Fiabilite'] || fields['fiabilite'] || 0,
-      fiabilite_explication: fields['Fiabilite_explication'] || fields['Fiabilite explication'] || fields['fiabilite_explication'] || ''
-    },
-    analyse_technique: {
-      materiau: fields['Materiau'] || fields['materiau'] || '',
-      technologie: fields['Technologie'] || fields['technologie'] || '',
-      logiciel: fields['Logiciel'] || fields['logiciel'] || ''
-    },
-    innovation: {
-      estimation_TRL: fields['Estimation TRL'] || fields['estimation_TRL'] || '',
-      numero_TRL: fields['Numero TRL'] || fields['numero_TRL'] || 0,
-      explication_TRL: fields['Explication TRL'] || fields['explication_TRL'] || '',
-      projection_TRL: fields['Projection TRL'] || fields['projection_TRL'] || '',
-      application_secteur: Array.isArray(fields['Application secteur']) ? fields['Application secteur'] :
-                          Array.isArray(fields['application_secteur']) ? fields['application_secteur'] :
-                          typeof fields['Application secteur'] === 'string' ? [fields['Application secteur']] :
-                          typeof fields['application_secteur'] === 'string' ? [fields['application_secteur']] : []
-    },
-    metadata: {
-      date_traitement: fields['Date traitement'] || fields['date_traitement'] || '',
-      version_analyse: fields['Version analyse'] || fields['version_analyse'] || '',
-      sources_consolidees: Array.isArray(fields['Sources consolidees']) ? fields['Sources consolidees'] :
-                          Array.isArray(fields['sources_consolidees']) ? fields['sources_consolidees'] :
-                          typeof fields['Sources consolidees'] === 'string' ? [fields['Sources consolidees']] :
-                          typeof fields['sources_consolidees'] === 'string' ? [fields['sources_consolidees']] : [],
-      qualite_donnees: fields['Qualite donnees'] || fields['qualite_donnees'] || 0,
-      confiance_analyse: fields['Confiance analyse'] || fields['confiance_analyse'] || 0,
-      resume_executif: fields['Resume executif'] || fields['resume_executif'] || '',
-      tags_principaux: Array.isArray(fields['Tags principaux']) ? fields['Tags principaux'] :
-                      Array.isArray(fields['tags_principaux']) ? fields['tags_principaux'] :
-                      typeof fields['Tags principaux'] === 'string' ? [fields['Tags principaux']] :
-                      typeof fields['tags_principaux'] === 'string' ? [fields['tags_principaux']] : [],
-      priorite_veille: fields['Priorite veille'] || fields['priorite_veille'] || 0
-    }
-  }
+          mots_cles: Array.isArray(fields['Mots cles']) ? fields['Mots cles'] : 
+                    typeof fields['Mots cles'] === 'string' ? [fields['Mots cles']] : [],
+          categorie: Array.isArray(fields['Categorie']) ? fields['Categorie'] : 
+                    typeof fields['Categorie'] === 'string' ? [fields['Categorie']] : [],
+      date_publication: fields['date publication'] || fields['Date publication'] || fields['Date'] || fields['date'] || '',
+          auteur: fields['Auteur'] || '',
+          source: fields['Nom de la source'] || '',
+          entreprises_citees: Array.isArray(fields['Entreprises citées']) ? fields['Entreprises citées'] : 
+                            typeof fields['Entreprises citées'] === 'string' ? [fields['Entreprises citées']] : [],
+          citations: Array.isArray(fields['Citation (lien dans l\'article)']) ? fields['Citation (lien dans l\'article)'] : 
+                    typeof fields['Citation (lien dans l\'article)'] === 'string' ? [fields['Citation (lien dans l\'article)']] : [],
+          pays_source: fields['Pays source'] || '',
+          zone_geographique: fields['Zone geographique'] || '',
+          typologie_source: fields['Typologie de source'] || '',
+          typologie_contenu: fields['Typologie de contenu'] || ''
+        },
+        evaluation: {
+          pertinence: fields['Pertinence'] || fields['pertinence'] || 0,
+          pertinence_explication: fields['Pertinence_explication'] || fields['Pertinence explication'] || fields['pertinence_explication'] || '',
+          fiabilite: fields['Fiabilite'] || fields['fiabilite'] || 0,
+          fiabilite_explication: fields['Fiabilite_explication'] || fields['Fiabilite explication'] || fields['fiabilite_explication'] || ''
+        },
+        analyse_technique: {
+          materiau: fields['Materiau'] || fields['materiau'] || '',
+          technologie: fields['Technologie'] || fields['technologie'] || '',
+          logiciel: fields['Logiciel'] || fields['logiciel'] || ''
+        },
+        innovation: {
+          estimation_TRL: fields['Estimation TRL'] || fields['estimation_TRL'] || '',
+          numero_TRL: fields['Numero TRL'] || fields['numero_TRL'] || 0,
+          explication_TRL: fields['Explication TRL'] || fields['explication_TRL'] || '',
+          projection_TRL: fields['Projection TRL'] || fields['projection_TRL'] || '',
+          application_secteur: Array.isArray(fields['Application secteur']) ? fields['Application secteur'] : 
+                              Array.isArray(fields['application_secteur']) ? fields['application_secteur'] : 
+                              typeof fields['Application secteur'] === 'string' ? [fields['Application secteur']] : 
+                              typeof fields['application_secteur'] === 'string' ? [fields['application_secteur']] : []
+        },
+        metadata: {
+          date_traitement: fields['Date traitement'] || fields['date_traitement'] || '',
+          version_analyse: fields['Version analyse'] || fields['version_analyse'] || '',
+          sources_consolidees: Array.isArray(fields['Sources consolidees']) ? fields['Sources consolidees'] : 
+                              Array.isArray(fields['sources_consolidees']) ? fields['sources_consolidees'] : 
+                              typeof fields['Sources consolidees'] === 'string' ? [fields['Sources consolidees']] : 
+                              typeof fields['sources_consolidees'] === 'string' ? [fields['sources_consolidees']] : [],
+          qualite_donnees: fields['Qualite donnees'] || fields['qualite_donnees'] || 0,
+          confiance_analyse: fields['Confiance analyse'] || fields['confiance_analyse'] || 0,
+          resume_executif: fields['Resume executif'] || fields['resume_executif'] || '',
+          tags_principaux: Array.isArray(fields['Tags principaux']) ? fields['Tags principaux'] : 
+                          Array.isArray(fields['tags_principaux']) ? fields['tags_principaux'] : 
+                          typeof fields['Tags principaux'] === 'string' ? [fields['Tags principaux']] : 
+                          typeof fields['tags_principaux'] === 'string' ? [fields['tags_principaux']] : [],
+          priorite_veille: fields['Priorite veille'] || fields['priorite_veille'] || 0
+        }
+      }
 }
 export async function GET(request: Request) {
   try {
@@ -128,10 +205,25 @@ export async function GET(request: Request) {
 
       const mapped = records
         .filter((record: any) => {
-          const titre = record.fields['Titre']
-          return titre && typeof titre === 'string' && titre.trim() !== ''
+          const titre = record.fields['Titre'] || record.fields['Titre article'] || record.fields['title'] || record.fields['Title'] || record.fields['Nom'] || record.fields['name']
+          return titre && typeof titre === 'string' && String(titre).trim() !== ''
         })
-        .map((record: any) => mapRecordToData(record))
+        .map((record: any) => {
+          const it = mapRecordToData(record)
+          // Normalisation / regroupement au niveau API
+          const rawCats = Array.isArray(it.article?.categorie) ? it.article?.categorie : (it.article?.categorie ? [it.article?.categorie] : [])
+          const splitCats = rawCats.flatMap((c: any) => String(c).split(/[,/]|\u00B7|\||;|\s{2,}/)).map((s: string) => s.trim()).filter(Boolean)
+          const groupedCats = Array.from(new Set(splitCats.map(groupCategory)))
+          const groupedTypo = groupTypologie(it.article?.typologie_contenu)
+          return {
+            ...it,
+            article: {
+              ...it.article,
+              categorie: groupedCats,
+              typologie_contenu: groupedTypo
+            }
+          }
+        })
 
       const headers = new Headers({
         'Content-Type': 'application/json',
@@ -142,6 +234,7 @@ export async function GET(request: Request) {
         'X-Articles-Count': mapped.length.toString()
       })
 
+      // Toujours renvoyer items, même si vide; nextOffset si présent
       return new NextResponse(JSON.stringify({ items: mapped, nextOffset: json.offset || null }), {
         status: 200,
         headers
