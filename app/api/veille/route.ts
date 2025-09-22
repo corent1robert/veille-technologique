@@ -125,6 +125,26 @@ function groupLogiciel(label?: string): string {
   return 'Autres'
 }
 
+function groupTechnologie(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  // Familles normalisées AM (ISO/ASTM 52900)
+  if (/(extrusion de matiere|fused filament|fff|fdm|direct ink writing|diw|material extrusion)/.test(l)) return 'Extrusion de matière'
+  if (/(photopolymerisation|sla|dlp|msla|stereolithographie|lithography)/.test(l)) return 'Photopolymérisation'
+  if (/(fusion sur lit de poudre polymere|pbf p|sls|selective laser sintering|polymer powder bed)/.test(l)) return 'Fusion sur lit de poudre polymère'
+  if (/(fusion sur lit de poudre metal|pbf m|l pbf|l\-pbf|e pbf|e\-pbf|slm|dmls|ebm|laser powder bed|electron beam)/.test(l)) return 'Fusion sur lit de poudre métal'
+  if (/(jet de matiere|material jetting|polyjet|mjp)/.test(l)) return 'Jet de matière'
+  if (/(jet de liant|binder jetting|binderjet)/.test(l)) return 'Jet de liant'
+  if (/(depot de fil metallique|wire arc am|waam|cold spray|csam|directed energy deposition|ded|laser metal deposition|lmd|clad|depôt energetique dirige)/.test(l)) return 'Dépôt d’énergie dirigée'
+  if (/(stratification de feuilles|laminated object manufacturing|lom|sheet lamination)/.test(l)) return 'Stratification de feuilles'
+  if (/(bio impression|bioprint)/.test(l)) return 'Bio-impression'
+  if (/(impression 3d beton|beton|construction printing|concrete)/.test(l)) return 'Impression 3D Béton'
+  if (/(injection molding|moulage par injection|thermoforming|formage thermique)/.test(l)) return 'Procédé conventionnel associé'
+  if (/(scan 3d|scannage|3d scanning|metrologie|metrology)/.test(l)) return 'Numérisation / Métrologie'
+  // Par défaut, renvoyer libellé capitalisé simple
+  return label || 'Autres'
+}
+
 function groupPaysSource(label?: string): string {
   const l = normalizeLabel(label || '')
   if (!l) return 'Autres'
@@ -184,7 +204,7 @@ function mapRecordToData(record: any) {
         },
         analyse_technique: {
           materiau: groupMateriau(fields['Materiau'] || fields['materiau']),
-          technologie: fields['Technologie'] || fields['technologie'] || '',
+          technologie: groupTechnologie(fields['Technologie'] || fields['technologie']),
           logiciel: groupLogiciel(fields['Logiciel'] || fields['logiciel'])
         },
         innovation: {
