@@ -152,9 +152,54 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       }
     })
     
-    const arr = Array.from(values)
-      .map(value => ({ value, label: value }))
-    // Placer "Autres" toujours à la fin
+    let raw = Array.from(values) as string[]
+
+    // Post-traitement spécifique pour la Technologie: regrouper les "Autre(...)" et trier par ordre lisible
+    if (field === 'analyse_technique.technologie') {
+      const collapseAutres = (s: string) => {
+        const x = s.trim()
+        if (/^autre/i.test(x) || /^autres$/i.test(x) || /^non précisé$/i.test(x) || /^non precise$/i.test(x)) return 'Autres'
+        return x
+      }
+      raw = raw.map(collapseAutres)
+      // Dédupliquer après regroupement
+      raw = Array.from(new Set(raw))
+
+      const preferredOrder = [
+        'Extrusion de matière',
+        'Photopolymérisation',
+        'Fusion sur lit de poudre polymère',
+        'Fusion sur lit de poudre métal',
+        'Jet de matière',
+        'Jet de liant',
+        'Dépôt d’énergie dirigée',
+        'Stratification de feuilles',
+        'Bio-impression',
+        'Impression 3D Béton',
+        'Numérisation / Métrologie',
+        'Procédé conventionnel associé',
+        'Autres'
+      ]
+
+      raw.sort((a, b) => {
+        const ia = preferredOrder.indexOf(a)
+        const ib = preferredOrder.indexOf(b)
+        const aIn = ia !== -1
+        const bIn = ib !== -1
+        if (aIn && bIn) return ia - ib
+        if (aIn && !bIn) return -1
+        if (!aIn && bIn) return 1
+        // Sinon, tri alpha mais "Autres" en dernier
+        const aIsOther = a.toLowerCase() === 'autres'
+        const bIsOther = b.toLowerCase() === 'autres'
+        if (aIsOther && !bIsOther) return 1
+        if (!aIsOther && bIsOther) return -1
+        return a.localeCompare(b, 'fr', { sensitivity: 'base' })
+      })
+    }
+
+    const arr = raw.map(value => ({ value, label: value }))
+    // Placer "Autres" toujours à la fin (général)
     arr.sort((a, b) => {
       const aIsOther = a.label.toLowerCase() === 'autres'
       const bIsOther = b.label.toLowerCase() === 'autres'
