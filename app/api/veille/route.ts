@@ -86,6 +86,71 @@ function groupTypologie(label?: string): string {
   return 'Autres'
 }
 
+function groupZoneGeographique(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(europe|france|allemagne|italie|espagne|royaume uni|pays bas|belgique|suisse|autriche|suede|norvege|danemark|finlande|pologne|republique tcheque|hongrie|portugal|grece|irlande|luxembourg|slovaquie|slovenie|croatie|roumanie|bulgarie|lituanie|lettonie|estonie|malte|chypre)/.test(l)) return 'Europe'
+  if (/(amerique du nord|etats unis|canada|usa|us|amerique du nord)/.test(l)) return 'Amérique du Nord'
+  if (/(asie|chine|japon|coree du sud|inde|singapour|hong kong|taiwan|thailande|vietnam|malaisie|indonesie|philippines|asie est|asie sud|asie du sud)/.test(l)) return 'Asie'
+  if (/(amerique du sud|bresil|argentine|chili|colombie|perou|uruguay|paraguay|bolivie|equateur|venezuela)/.test(l)) return 'Amérique du Sud'
+  if (/(afrique|afrique du sud|egypte|maroc|tunisie|algerie|nigeria|kenya|ghana|afrique nord)/.test(l)) return 'Afrique'
+  if (/(oceanie|australie|nouvelle zelande)/.test(l)) return 'Océanie'
+  if (/(moyen orient|israel|emirats arabes unis|arabie saoudite|turquie|iran)/.test(l)) return 'Moyen-Orient'
+  if (/(international|global|mondial|multi pays|internationale)/.test(l)) return 'International'
+  return 'Autres'
+}
+
+function groupMateriau(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(polymere|plastique|polyethylene|polypropylene|pvc|pet|resine|elastomere|caoutchouc|silicone|polyurethane|acrylique|nylon|polyester|polycarbonate|polystyrene|abs|pmma)/.test(l)) return 'Polymères'
+  if (/(metal|acier|aluminium|titane|cuivre|zinc|nickel|chrome|fer|alliage|bronze|laiton|inox|acier inoxydable|magnesium|plomb|etain)/.test(l)) return 'Métaux'
+  if (/(ceramique|porcelaine|faience|gres|terre cuite|brique|carrelage|ciment|beton|chaux|platre|gypse)/.test(l)) return 'Céramiques'
+  if (/(composite|fibre de verre|fibre de carbone|kevlar|aramide|bois|bambou|liege|composite bois plastique|wpc)/.test(l)) return 'Composites'
+  if (/(textile|coton|laine|soie|lin|chanvre|jute|polyester textile|nylon textile|fibre naturelle|fibre synthetique)/.test(l)) return 'Textiles'
+  if (/(verre|cristal|verre borosilicaté|verre trempe|verre feuilleté|verre optique)/.test(l)) return 'Verres'
+  if (/(papier|carton|carton ondule|papier recycle|cellulose|pate a papier)/.test(l)) return 'Papier/Carton'
+  return 'Autres'
+}
+
+function groupLogiciel(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(cao|fao|solidworks|autocad|fusion 360|inventor|catia|nx|creo|rhino|sketchup|freecad|openscad|blender|maya|3ds max|cad|cam)/.test(l)) return 'CAO/FAO'
+  if (/(simulation|ansys|comsol|abaqus|ls dyna|fluent|cfd|fea|modelisation|calcul|analyse)/.test(l)) return 'Simulation'
+  if (/(sap|oracle|microsoft dynamics|salesforce|erp|crm|plm|mes|wms|gestion|management)/.test(l)) return 'Gestion'
+  if (/(tensorflow|pytorch|scikit learn|keras|opencv|machine learning|deep learning|intelligence artificielle|ia|ml|neural network|cnn|rnn)/.test(l)) return 'IA/ML'
+  if (/(python|r|matlab|julia|c\+\+|java|javascript|node\.js|react|vue|angular|developpement|programmation|code)/.test(l)) return 'Développement'
+  if (/(tableau|power bi|qlik|looker|jupyter|rstudio|spss|sas|analyse|data|big data|analytics|bi)/.test(l)) return 'Analyse de données'
+  return 'Autres'
+}
+
+function groupPaysSource(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(france|allemagne|italie|espagne|royaume uni|pays bas|belgique|suisse|autriche|suede|norvege|danemark|finlande|pologne|republique tcheque|hongrie|portugal|grece|irlande|luxembourg|slovaquie|slovenie|croatie|roumanie|bulgarie|lituanie|lettonie|estonie|malte|chypre)/.test(l)) return 'Europe'
+  if (/(etats unis|canada|usa|us|amerique du nord)/.test(l)) return 'Amérique du Nord'
+  if (/(chine|japon|coree du sud|inde|singapour|hong kong|taiwan|thailande|vietnam|malaisie|indonesie|philippines)/.test(l)) return 'Asie'
+  if (/(bresil|argentine|chili|colombie|perou|uruguay|paraguay|bolivie|equateur|venezuela)/.test(l)) return 'Amérique du Sud'
+  if (/(afrique du sud|egypte|maroc|tunisie|algerie|nigeria|kenya|ghana)/.test(l)) return 'Afrique'
+  if (/(australie|nouvelle zelande)/.test(l)) return 'Océanie'
+  if (/(israel|emirats arabes unis|arabie saoudite|turquie|iran)/.test(l)) return 'Moyen-Orient'
+  if (/(international|global|mondial|multi pays)/.test(l)) return 'International'
+  return 'Autres'
+}
+
+function groupTypologieSource(label?: string): string {
+  const l = normalizeLabel(label || '')
+  if (!l) return 'Autres'
+  if (/(nature|science|cell|pnas|journal of|review|research|scientific|academic|peer reviewed|revue scientifique|publication scientifique)/.test(l)) return 'Revues scientifiques'
+  if (/(techcrunch|wired|mit technology review|ieee spectrum|presse|magazine|journal|media|presse specialisee)/.test(l)) return 'Presse spécialisée'
+  if (/(mit|stanford|harvard|cnrs|inria|universite|laboratoire|institut|centre de recherche|institution|organisme)/.test(l)) return 'Institutions'
+  if (/(google|microsoft|apple|tesla|startup|entreprise|corporation|company|firm|societe)/.test(l)) return 'Entreprises'
+  if (/(gouvernement|ministere|agence|commission|autorite|etat|public|administration)/.test(l)) return 'Gouvernements'
+  if (/(onu|unesco|oms|ocde|organisation|association|fondation|ong|international)/.test(l)) return 'Organisations'
+  return 'Autres'
+}
+
 function mapRecordToData(record: any) {
       const fields = record.fields
       return {
@@ -97,8 +162,8 @@ function mapRecordToData(record: any) {
       image_url: (Array.isArray(fields['Image']) && fields['Image'][0]?.url) || fields['Image'] || fields['image_url'] || '',
           mots_cles: Array.isArray(fields['Mots cles']) ? fields['Mots cles'] : 
                     typeof fields['Mots cles'] === 'string' ? [fields['Mots cles']] : [],
-          categorie: Array.isArray(fields['Categorie']) ? fields['Categorie'] : 
-                    typeof fields['Categorie'] === 'string' ? [fields['Categorie']] : [],
+          categorie: Array.isArray(fields['Categorie']) ? fields['Categorie'].map(groupCategory) : 
+                    typeof fields['Categorie'] === 'string' ? [groupCategory(fields['Categorie'])] : [],
       date_publication: fields['date publication'] || fields['Date publication'] || fields['Date'] || fields['date'] || '',
           auteur: fields['Auteur'] || '',
           source: fields['Nom de la source'] || '',
@@ -106,10 +171,10 @@ function mapRecordToData(record: any) {
                             typeof fields['Entreprises citées'] === 'string' ? [fields['Entreprises citées']] : [],
           citations: Array.isArray(fields['Citation (lien dans l\'article)']) ? fields['Citation (lien dans l\'article)'] : 
                     typeof fields['Citation (lien dans l\'article)'] === 'string' ? [fields['Citation (lien dans l\'article)']] : [],
-          pays_source: fields['Pays source'] || '',
-          zone_geographique: fields['Zone geographique'] || '',
-          typologie_source: fields['Typologie de source'] || '',
-          typologie_contenu: fields['Typologie de contenu'] || ''
+          pays_source: groupPaysSource(fields['Pays source']),
+          zone_geographique: groupZoneGeographique(fields['Zone geographique']),
+          typologie_source: groupTypologieSource(fields['Typologie de source']),
+          typologie_contenu: groupTypologie(fields['Typologie de contenu'])
         },
         evaluation: {
           pertinence: fields['Pertinence'] || fields['pertinence'] || 0,
@@ -118,9 +183,9 @@ function mapRecordToData(record: any) {
           fiabilite_explication: fields['Fiabilite_explication'] || fields['Fiabilite explication'] || fields['fiabilite_explication'] || ''
         },
         analyse_technique: {
-          materiau: fields['Materiau'] || fields['materiau'] || '',
+          materiau: groupMateriau(fields['Materiau'] || fields['materiau']),
           technologie: fields['Technologie'] || fields['technologie'] || '',
-          logiciel: fields['Logiciel'] || fields['logiciel'] || ''
+          logiciel: groupLogiciel(fields['Logiciel'] || fields['logiciel'])
         },
         innovation: {
           estimation_TRL: fields['Estimation TRL'] || fields['estimation_TRL'] || '',
