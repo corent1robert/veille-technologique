@@ -118,7 +118,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       type: 'select',
       label: 'Application secteur',
       field: 'innovation.application_secteur',
-      operator: 'eq'
+      operator: 'contains'
     }
   ], [])
 
@@ -157,6 +157,23 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
     // Debug pour les filtres problématiques
     if (field === 'analyse_technique.technologie' || field === 'innovation.application_secteur') {
       console.log(`🔍 Filtre ${field}:`, raw)
+    }
+
+    // Post-traitement spécifique pour Application secteur: séparer les éléments du tableau
+    if (field === 'innovation.application_secteur') {
+      const separatedValues = new Set<string>()
+      raw.forEach(value => {
+        // Séparer par virgule et nettoyer chaque élément
+        const parts = value.split(',').map(part => part.trim()).filter(part => part.length > 0)
+        parts.forEach(part => {
+          // Nettoyer les espaces et caractères spéciaux
+          const cleanPart = part.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim()
+          if (cleanPart) {
+            separatedValues.add(cleanPart)
+          }
+        })
+      })
+      raw = Array.from(separatedValues).sort()
     }
 
     // Post-traitement spécifique pour la Technologie: regrouper les "Autre(...)" et trier par ordre lisible
