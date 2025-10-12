@@ -236,10 +236,13 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
 
   // Upsert d'un filtre date spécifique (gte/lte)
   const upsertDateFilter = (operator: 'gte' | 'lte', valueISO: string) => {
+    console.log(`📅 upsertDateFilter: ${operator} = ${valueISO}`)
+    
     const existing = filters.activeFilters.find(
       f => f.field === DATE_FIELD && f.type === 'date' && f.operator === operator
     )
     if (existing) {
+      console.log(`  - Mise à jour filtre existant: ${existing.id}`)
       updateFilter(existing.id, { value: valueISO })
       return
     }
@@ -252,6 +255,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       operator,
       value: valueISO
     }
+    console.log(`  - Création nouveau filtre:`, newFilter)
     setFilters({
       ...filters,
       activeFilters: [...filters.activeFilters, newFilter]
@@ -273,6 +277,11 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
     const start = new Date()
     start.setDate(today.getDate() - (days - 1))
     const toISO = (d: Date) => d.toISOString().slice(0, 10)
+    
+    console.log(`🎯 Appliquer filtre ${days} jours:`)
+    console.log(`  - Aujourd'hui: ${toISO(today)}`)
+    console.log(`  - Début: ${toISO(start)}`)
+    
     upsertDateFilter('gte', toISO(start))
     upsertDateFilter('lte', toISO(today))
   }
