@@ -1,6 +1,69 @@
 import { VeilleData, FilterState, ActiveFilter } from '@/types/veille'
 import { searchInVeilleData } from './searchUtils'
 
+// Fonction pour regrouper les technologies (même logique que dans FilterPanel)
+function groupTechnologie(value: string): string {
+  const lowerValue = value.toLowerCase()
+  
+  // Extrusion & FDM
+  if (lowerValue.includes('extrusion') || lowerValue.includes('fdm') ||
+      lowerValue.includes('fused deposition') || lowerValue.includes('filament')) {
+    return 'Extrusion & FDM'
+  }
+  // Photopolymérisation & SLA
+  else if (lowerValue.includes('photopolymérisation') || lowerValue.includes('sla') ||
+           lowerValue.includes('stereolithography') || lowerValue.includes('dlp') ||
+           lowerValue.includes('uv') || lowerValue.includes('résine')) {
+    return 'Photopolymérisation & SLA'
+  }
+  // Fusion sur lit de poudre
+  else if (lowerValue.includes('fusion sur lit') || lowerValue.includes('sintering') ||
+           lowerValue.includes('sls') || lowerValue.includes('slm') ||
+           lowerValue.includes('poudre métal') || lowerValue.includes('poudre polymère') ||
+           lowerValue.includes('selective laser') || lowerValue.includes('eos') ||
+           lowerValue.includes('multijet fusion') || lowerValue.includes('mjf')) {
+    return 'Fusion sur lit de poudre'
+  }
+  // Jet de matière & Binder Jetting
+  else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
+           lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
+           lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol')) {
+    return 'Jet de matière & Binder Jetting'
+  }
+  // Bio-impression & Biomédical
+  else if (lowerValue.includes('bio-impression') || lowerValue.includes('bioprinting') ||
+           lowerValue.includes('biomédical') || lowerValue.includes('tissulaire') ||
+           lowerValue.includes('cellules') || lowerValue.includes('organoïdes')) {
+    return 'Bio-impression & Biomédical'
+  }
+  // Impression 3D Béton & Construction
+  else if (lowerValue.includes('béton') || lowerValue.includes('concrete') ||
+           lowerValue.includes('construction') || lowerValue.includes('ciment')) {
+    return 'Impression 3D Béton & Construction'
+  }
+  // Procédés conventionnels
+  else if (lowerValue.includes('conventionnel') || lowerValue.includes('injection') ||
+           lowerValue.includes('moulage') || lowerValue.includes('thermoformage') ||
+           lowerValue.includes('electroformage') || lowerValue.includes('electroforming')) {
+    return 'Procédés conventionnels'
+  }
+  // Métrologie & Contrôle
+  else if (lowerValue.includes('métrologie') || lowerValue.includes('numérisation') ||
+           lowerValue.includes('scan') || lowerValue.includes('contrôle') ||
+           lowerValue.includes('mesure') || lowerValue.includes('inspection')) {
+    return 'Métrologie & Contrôle'
+  }
+  // Non précisé & Autres
+  else if (lowerValue.includes('non précisé') || lowerValue.includes('autre') ||
+           lowerValue.includes('non precise') || lowerValue.includes('non spécifié')) {
+    return 'Non précisé & Autres'
+  }
+  // Autres technologies spécialisées
+  else {
+    return 'Autres technologies spécialisées'
+  }
+}
+
 // Fonction pour regrouper les secteurs d'application (même logique que dans FilterPanel)
 function groupApplicationSecteur(value: string): string {
   const lowerValue = value.toLowerCase()
@@ -191,11 +254,16 @@ export function applyFilters(data: VeilleData[], filters: FilterState): VeilleDa
             
           case 'contains':
             if (Array.isArray(fieldValue)) {
-              // Cas spécial pour application_secteur : utiliser le regroupement
+              // Cas spéciaux pour les champs avec regroupement
               if (field === 'innovation.application_secteur') {
                 matches = fieldValue.some(val => {
                   const groupedSecteur = groupApplicationSecteur(val.toString())
                   return groupedSecteur === filter.value.toString()
+                })
+              } else if (field === 'analyse_technique.technologie') {
+                matches = fieldValue.some(val => {
+                  const groupedTechnologie = groupTechnologie(val.toString())
+                  return groupedTechnologie === filter.value.toString()
                 })
               } else {
                 matches = fieldValue.some(val => 
@@ -203,10 +271,13 @@ export function applyFilters(data: VeilleData[], filters: FilterState): VeilleDa
                 )
               }
             } else {
-              // Cas spécial pour application_secteur : utiliser le regroupement
+              // Cas spéciaux pour les champs avec regroupement
               if (field === 'innovation.application_secteur') {
                 const groupedSecteur = groupApplicationSecteur(fieldValue.toString())
                 matches = groupedSecteur === filter.value.toString()
+              } else if (field === 'analyse_technique.technologie') {
+                const groupedTechnologie = groupTechnologie(fieldValue.toString())
+                matches = groupedTechnologie === filter.value.toString()
               } else {
                 matches = fieldValue.toString().toLowerCase().includes(filter.value.toString().toLowerCase())
               }

@@ -282,48 +282,72 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       raw = Array.from(groupedValues).sort()
     }
 
-    // Post-traitement spécifique pour la Technologie: regrouper les "Autre(...)" et trier par ordre lisible
+    // Post-traitement spécifique pour la Technologie: regrouper en grandes familles
     if (field === 'analyse_technique.technologie') {
-      const collapseAutres = (s: string) => {
-        const x = s.trim()
-        if (/^autre/i.test(x) || /^autres$/i.test(x) || /^non précisé$/i.test(x) || /^non precise$/i.test(x)) return 'Autres'
-        return x
-      }
-      raw = raw.map(collapseAutres)
-      // Dédupliquer après regroupement
-      raw = Array.from(new Set(raw))
-
-      const preferredOrder = [
-        'Extrusion de matière',
-        'Photopolymérisation',
-        'Fusion sur lit de poudre polymère',
-        'Fusion sur lit de poudre métal',
-        'Jet de matière',
-        'Jet de liant',
-        'Dépôt d’énergie dirigée',
-        'Stratification de feuilles',
-        'Bio-impression',
-        'Impression 3D Béton',
-        'Numérisation / Métrologie',
-        'Procédé conventionnel associé',
-        'Autres'
-      ]
-
-      raw.sort((a, b) => {
-        const ia = preferredOrder.indexOf(a)
-        const ib = preferredOrder.indexOf(b)
-        const aIn = ia !== -1
-        const bIn = ib !== -1
-        if (aIn && bIn) return ia - ib
-        if (aIn && !bIn) return -1
-        if (!aIn && bIn) return 1
-        // Sinon, tri alpha mais "Autres" en dernier
-        const aIsOther = a.toLowerCase() === 'autres'
-        const bIsOther = b.toLowerCase() === 'autres'
-        if (aIsOther && !bIsOther) return 1
-        if (!aIsOther && bIsOther) return -1
-        return a.localeCompare(b, 'fr', { sensitivity: 'base' })
+      const groupedValues = new Set<string>()
+      raw.forEach(value => {
+        const lowerValue = value.toLowerCase()
+        
+        // Extrusion & FDM (33 occurrences)
+        if (lowerValue.includes('extrusion') || lowerValue.includes('fdm') ||
+            lowerValue.includes('fused deposition') || lowerValue.includes('filament')) {
+          groupedValues.add('Extrusion & FDM')
+        }
+        // Photopolymérisation & SLA (13 occurrences)
+        else if (lowerValue.includes('photopolymérisation') || lowerValue.includes('sla') ||
+                 lowerValue.includes('stereolithography') || lowerValue.includes('dlp') ||
+                 lowerValue.includes('uv') || lowerValue.includes('résine')) {
+          groupedValues.add('Photopolymérisation & SLA')
+        }
+        // Fusion sur lit de poudre (13+1 occurrences)
+        else if (lowerValue.includes('fusion sur lit') || lowerValue.includes('sintering') ||
+                 lowerValue.includes('sls') || lowerValue.includes('slm') ||
+                 lowerValue.includes('poudre métal') || lowerValue.includes('poudre polymère') ||
+                 lowerValue.includes('selective laser') || lowerValue.includes('eos') ||
+                 lowerValue.includes('multijet fusion') || lowerValue.includes('mjf')) {
+          groupedValues.add('Fusion sur lit de poudre')
+        }
+        // Jet de matière & Binder Jetting (1+ occurrences)
+        else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
+                 lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
+                 lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol')) {
+          groupedValues.add('Jet de matière & Binder Jetting')
+        }
+        // Bio-impression & Biomédical (5 occurrences)
+        else if (lowerValue.includes('bio-impression') || lowerValue.includes('bioprinting') ||
+                 lowerValue.includes('biomédical') || lowerValue.includes('tissulaire') ||
+                 lowerValue.includes('cellules') || lowerValue.includes('organoïdes')) {
+          groupedValues.add('Bio-impression & Biomédical')
+        }
+        // Impression 3D Béton & Construction
+        else if (lowerValue.includes('béton') || lowerValue.includes('concrete') ||
+                 lowerValue.includes('construction') || lowerValue.includes('ciment')) {
+          groupedValues.add('Impression 3D Béton & Construction')
+        }
+        // Procédés conventionnels (2 occurrences)
+        else if (lowerValue.includes('conventionnel') || lowerValue.includes('injection') ||
+                 lowerValue.includes('moulage') || lowerValue.includes('thermoformage') ||
+                 lowerValue.includes('electroformage') || lowerValue.includes('electroforming')) {
+          groupedValues.add('Procédés conventionnels')
+        }
+        // Métrologie & Contrôle
+        else if (lowerValue.includes('métrologie') || lowerValue.includes('numérisation') ||
+                 lowerValue.includes('scan') || lowerValue.includes('contrôle') ||
+                 lowerValue.includes('mesure') || lowerValue.includes('inspection')) {
+          groupedValues.add('Métrologie & Contrôle')
+        }
+        // Non précisé & Autres (28+2+ autres)
+        else if (lowerValue.includes('non précisé') || lowerValue.includes('autre') ||
+                 lowerValue.includes('non precise') || lowerValue.includes('non spécifié')) {
+          groupedValues.add('Non précisé & Autres')
+        }
+        // Autres technologies spécialisées
+        else {
+          groupedValues.add('Autres technologies spécialisées')
+        }
       })
+      
+      raw = Array.from(groupedValues).sort()
     }
 
     const arr = raw.map(value => ({ value, label: value }))
