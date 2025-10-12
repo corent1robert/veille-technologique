@@ -284,8 +284,33 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
     console.log(`  - Aujourd'hui: ${toISO(today)}`)
     console.log(`  - Début: ${toISO(start)}`)
     
-    upsertDateFilter('gte', toISO(start))
-    upsertDateFilter('lte', toISO(today))
+    // Créer les deux filtres en une seule fois
+    const gteFilter: ActiveFilter = {
+      id: `date_gte_${Date.now()}`,
+      type: 'date',
+      label: 'Date de publication',
+      field: DATE_FIELD,
+      operator: 'gte',
+      value: toISO(start)
+    }
+    
+    const lteFilter: ActiveFilter = {
+      id: `date_lte_${Date.now() + 1}`,
+      type: 'date',
+      label: 'Date de publication',
+      field: DATE_FIELD,
+      operator: 'lte',
+      value: toISO(today)
+    }
+    
+    // Supprimer tous les filtres de date existants et ajouter les nouveaux
+    const otherFilters = filters.activeFilters.filter(f => f.field !== DATE_FIELD)
+    setFilters({
+      ...filters,
+      activeFilters: [...otherFilters, gteFilter, lteFilter]
+    })
+    
+    console.log(`✅ Filtres créés: gte=${toISO(start)}, lte=${toISO(today)}`)
   }
 
   const getDateFilterValue = (operator: 'gte' | 'lte') => {
