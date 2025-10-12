@@ -9,75 +9,119 @@ export function applyFilters(data: VeilleData[], filters: FilterState): VeilleDa
     filteredData = searchInVeilleData(filteredData, filters.search)
   }
 
-  // Appliquer chaque filtre actif
+  // Grouper les filtres par champ pour gérer les plages de dates
+  const filtersByField = new Map<string, ActiveFilter[]>()
   filters.activeFilters.forEach(filter => {
+    if (!filtersByField.has(filter.field)) {
+      filtersByField.set(filter.field, [])
+    }
+    filtersByField.get(filter.field)!.push(filter)
+  })
+
+  // Appliquer chaque groupe de filtres
+  filtersByField.forEach((fieldFilters, field) => {
     filteredData = filteredData.filter(item => {
-      const fieldValue = getFieldValue(item, filter.field)
+      const fieldValue = getFieldValue(item, field)
       
       if (fieldValue === null || fieldValue === undefined) {
         return false
       }
 
-      // Gestion spécifique des dates
-      if (filter.type === 'date') {
+      // Gestion spécifique des dates avec plages
+      if (fieldFilters[0].type === 'date') {
         const itemTime = new Date(fieldValue as any).getTime()
-        const filterDate = new Date(filter.value as any)
-        if (isNaN(itemTime) || isNaN(filterDate.getTime())) {
+        if (isNaN(itemTime)) {
           return false
         }
 
-        // Pour l'opérateur 'eq', on compare sur la journée entière (00:00 -> 23:59:59)
-        const filterStart = new Date(filterDate)
-        filterStart.setHours(0, 0, 0, 0)
-        const filterEnd = new Date(filterDate)
-        filterEnd.setHours(23, 59, 59, 999)
+        // Vérifier tous les filtres de date pour ce champ
+        for (const filter of fieldFilters) {
+          const filterDate = new Date(filter.value as any)
+          if (isNaN(filterDate.getTime())) {
+            return false
+          }
 
+          // Pour l'opérateur 'eq', on compare sur la journée entière (00:00 -> 23:59:59)
+          const filterStart = new Date(filterDate)
+          filterStart.setHours(0, 0, 0, 0)
+          const filterEnd = new Date(filterDate)
+          filterEnd.setHours(23, 59, 59, 999)
+
+          let matches = false
+          switch (filter.operator) {
+            case 'eq':
+              matches = itemTime >= filterStart.getTime() && itemTime <= filterEnd.getTime()
+              break
+            case 'gt':
+              matches = itemTime > filterEnd.getTime()
+              break
+            case 'gte':
+              matches = itemTime >= filterStart.getTime()
+              break
+            case 'lt':
+              matches = itemTime < filterStart.getTime()
+              break
+            case 'lte':
+              matches = itemTime <= filterEnd.getTime()
+              break
+            default:
+              matches = true
+          }
+          
+          if (!matches) {
+            return false
+          }
+        }
+        return true
+      }
+
+      // Gestion des autres types de filtres (non-date)
+      for (const filter of fieldFilters) {
+        let matches = false
         switch (filter.operator) {
           case 'eq':
-            return itemTime >= filterStart.getTime() && itemTime <= filterEnd.getTime()
+            if (Array.isArray(fieldValue)) {
+              matches = fieldValue.some(val => val.toString() === filter.value.toString())
+            } else {
+              matches = fieldValue.toString() === filter.value.toString()
+            }
+            break
+            
+          case 'contains':
+            if (Array.isArray(fieldValue)) {
+              matches = fieldValue.some(val => 
+                val.toString().toLowerCase().includes(filter.value.toString().toLowerCase())
+              )
+            } else {
+              matches = fieldValue.toString().toLowerCase().includes(filter.value.toString().toLowerCase())
+            }
+            break
+            
           case 'gt':
-            return itemTime > filterEnd.getTime()
+            matches = parseFloat(fieldValue.toString()) > parseFloat(filter.value.toString())
+            break
+            
           case 'gte':
-            return itemTime >= filterStart.getTime()
+            matches = parseFloat(fieldValue.toString()) >= parseFloat(filter.value.toString())
+            break
+            
           case 'lt':
-            return itemTime < filterStart.getTime()
+            matches = parseFloat(fieldValue.toString()) < parseFloat(filter.value.toString())
+            break
+            
           case 'lte':
-            return itemTime <= filterEnd.getTime()
+            matches = parseFloat(fieldValue.toString()) <= parseFloat(filter.value.toString())
+            break
+            
           default:
-            return true
+            matches = true
+        }
+        
+        if (!matches) {
+          return false
         }
       }
-
-      switch (filter.operator) {
-        case 'eq':
-          if (Array.isArray(fieldValue)) {
-            return fieldValue.some(val => val.toString() === filter.value.toString())
-          }
-          return fieldValue.toString() === filter.value.toString()
-          
-        case 'contains':
-          if (Array.isArray(fieldValue)) {
-            return fieldValue.some(val => 
-              val.toString().toLowerCase().includes(filter.value.toString().toLowerCase())
-            )
-          }
-          return fieldValue.toString().toLowerCase().includes(filter.value.toString().toLowerCase())
-          
-        case 'gt':
-          return parseFloat(fieldValue.toString()) > parseFloat(filter.value.toString())
-          
-        case 'gte':
-          return parseFloat(fieldValue.toString()) >= parseFloat(filter.value.toString())
-          
-        case 'lt':
-          return parseFloat(fieldValue.toString()) < parseFloat(filter.value.toString())
-          
-        case 'lte':
-          return parseFloat(fieldValue.toString()) <= parseFloat(filter.value.toString())
-          
-        default:
-          return true
-      }
+      return true
     })
   })
 
