@@ -118,7 +118,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       type: 'select',
       label: 'Application secteur',
       field: 'innovation.application_secteur',
-      operator: 'contains'
+      operator: 'eq'
     }
   ], [])
 
@@ -153,6 +153,11 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
     })
     
     let raw = Array.from(values) as string[]
+
+    // Debug pour les filtres problématiques
+    if (field === 'analyse_technique.technologie' || field === 'innovation.application_secteur') {
+      console.log(`🔍 Filtre ${field}:`, raw)
+    }
 
     // Post-traitement spécifique pour la Technologie: regrouper les "Autre(...)" et trier par ordre lisible
     if (field === 'analyse_technique.technologie') {
