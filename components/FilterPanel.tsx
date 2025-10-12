@@ -176,8 +176,10 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       
       // Regrouper en grandes thématiques
       const groupedValues = new Set<string>()
+      console.log('🔍 Secteurs séparés:', Array.from(separatedValues))
       separatedValues.forEach(value => {
         const lowerValue = value.toLowerCase()
+        console.log(`🔍 Traitement secteur: "${value}" -> "${lowerValue}"`)
         
         // Aéronautique & Spatial
         if (lowerValue.includes('aéronautique') || lowerValue.includes('aeronautique') || 
@@ -197,7 +199,11 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
                  lowerValue.includes('santé') || lowerValue.includes('health') || 
                  lowerValue.includes('dentaire') || lowerValue.includes('dental') ||
                  lowerValue.includes('biomédical') || lowerValue.includes('biomedical') ||
-                 lowerValue.includes('hôpital') || lowerValue.includes('hospital')) {
+                 lowerValue.includes('hôpital') || lowerValue.includes('hospital') ||
+                 lowerValue.includes('orthodontie') || lowerValue.includes('dentisterie') ||
+                 lowerValue.includes('dispositifs médicaux') || lowerValue.includes('medical devices') ||
+                 lowerValue.includes('implants') || lowerValue.includes('prothèses') ||
+                 lowerValue.includes('pharmaceutique') || lowerValue.includes('pharmaceutical')) {
           groupedValues.add('Santé & Médical')
         }
         // Énergie & Environnement
@@ -220,7 +226,11 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
         else if (lowerValue.includes('industrie') || lowerValue.includes('industrial') || 
                  lowerValue.includes('manufacturing') || lowerValue.includes('fabrication') ||
                  lowerValue.includes('production') || lowerValue.includes('outillage') ||
-                 lowerValue.includes('machines') || lowerValue.includes('équipement')) {
+                 lowerValue.includes('machines') || lowerValue.includes('équipement') ||
+                 lowerValue.includes('fabrication additive') || lowerValue.includes('additive manufacturing') ||
+                 lowerValue.includes('impression 3d') || lowerValue.includes('3d printing') ||
+                 lowerValue.includes('moules') || lowerValue.includes('molds') ||
+                 lowerValue.includes('prototypage') || lowerValue.includes('prototyping')) {
           groupedValues.add('Industrie & Manufacturing')
         }
         // Biens de consommation
