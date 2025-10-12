@@ -159,7 +159,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       console.log(`🔍 Filtre ${field}:`, raw)
     }
 
-    // Post-traitement spécifique pour Application secteur: séparer les éléments du tableau
+    // Post-traitement spécifique pour Application secteur: regrouper en grandes thématiques
     if (field === 'innovation.application_secteur') {
       const separatedValues = new Set<string>()
       raw.forEach(value => {
@@ -173,7 +173,75 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
           }
         })
       })
-      raw = Array.from(separatedValues).sort()
+      
+      // Regrouper en grandes thématiques
+      const groupedValues = new Set<string>()
+      separatedValues.forEach(value => {
+        const lowerValue = value.toLowerCase()
+        
+        // Aéronautique & Spatial
+        if (lowerValue.includes('aéronautique') || lowerValue.includes('aeronautique') || 
+            lowerValue.includes('spatial') || lowerValue.includes('aviation') || 
+            lowerValue.includes('défense') || lowerValue.includes('defense') ||
+            lowerValue.includes('military') || lowerValue.includes('armée')) {
+          groupedValues.add('Aéronautique & Défense')
+        }
+        // Automobile & Transport
+        else if (lowerValue.includes('automobile') || lowerValue.includes('automotive') || 
+                 lowerValue.includes('transport') || lowerValue.includes('mobilité') || 
+                 lowerValue.includes('mobility') || lowerValue.includes('véhicule')) {
+          groupedValues.add('Automobile & Transport')
+        }
+        // Santé & Médical
+        else if (lowerValue.includes('médical') || lowerValue.includes('medical') || 
+                 lowerValue.includes('santé') || lowerValue.includes('health') || 
+                 lowerValue.includes('dentaire') || lowerValue.includes('dental') ||
+                 lowerValue.includes('biomédical') || lowerValue.includes('biomedical') ||
+                 lowerValue.includes('hôpital') || lowerValue.includes('hospital')) {
+          groupedValues.add('Santé & Médical')
+        }
+        // Énergie & Environnement
+        else if (lowerValue.includes('énergie') || lowerValue.includes('energy') || 
+                 lowerValue.includes('environnement') || lowerValue.includes('environment') ||
+                 lowerValue.includes('éolien') || lowerValue.includes('wind') ||
+                 lowerValue.includes('solaire') || lowerValue.includes('solar') ||
+                 lowerValue.includes('hydrogène') || lowerValue.includes('hydrogen')) {
+          groupedValues.add('Énergie & Environnement')
+        }
+        // Électronique & IT
+        else if (lowerValue.includes('électronique') || lowerValue.includes('electronics') || 
+                 lowerValue.includes('informatique') || lowerValue.includes('it') ||
+                 lowerValue.includes('télécommunications') || lowerValue.includes('telecom') ||
+                 lowerValue.includes('cybersécurité') || lowerValue.includes('cybersecurity') ||
+                 lowerValue.includes('semi-conducteur') || lowerValue.includes('semiconductor')) {
+          groupedValues.add('Électronique & IT')
+        }
+        // Industrie & Manufacturing
+        else if (lowerValue.includes('industrie') || lowerValue.includes('industrial') || 
+                 lowerValue.includes('manufacturing') || lowerValue.includes('fabrication') ||
+                 lowerValue.includes('production') || lowerValue.includes('outillage') ||
+                 lowerValue.includes('machines') || lowerValue.includes('équipement')) {
+          groupedValues.add('Industrie & Manufacturing')
+        }
+        // Biens de consommation
+        else if (lowerValue.includes('consommation') || lowerValue.includes('consumer') || 
+                 lowerValue.includes('grand public') || lowerValue.includes('retail') ||
+                 lowerValue.includes('e-commerce') || lowerValue.includes('commerce')) {
+          groupedValues.add('Biens de consommation')
+        }
+        // Éducation & Recherche
+        else if (lowerValue.includes('éducation') || lowerValue.includes('education') || 
+                 lowerValue.includes('recherche') || lowerValue.includes('research') ||
+                 lowerValue.includes('université') || lowerValue.includes('university')) {
+          groupedValues.add('Éducation & Recherche')
+        }
+        // Autres
+        else {
+          groupedValues.add('Autres')
+        }
+      })
+      
+      raw = Array.from(groupedValues).sort()
     }
 
     // Post-traitement spécifique pour la Technologie: regrouper les "Autre(...)" et trier par ordre lisible
