@@ -601,7 +601,10 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
         </h3>
         <div className="flex flex-wrap gap-2 mb-3">
           <button
-            onClick={() => applyDatePresetDays(7)}
+            onClick={() => {
+              console.log('🔥 CLIC 7 jours')
+              applyDatePresetDays(7)
+            }}
             className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
           >7 jours</button>
           <button
@@ -609,7 +612,10 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
             className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
           >30 jours</button>
           <button
-            onClick={() => applyDatePresetDays(90)}
+            onClick={() => {
+              console.log('🔥 CLIC 90 jours')
+              applyDatePresetDays(90)
+            }}
             className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
           >90 jours</button>
           {(getDateFilterValue('gte') || getDateFilterValue('lte')) && (
