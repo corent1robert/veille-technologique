@@ -290,6 +290,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
     const f = filters.activeFilters.find(
       x => x.field === DATE_FIELD && x.type === 'date' && x.operator === operator
     )
+    console.log(`🔍 getDateFilterValue(${operator}):`, f?.value || 'vide')
     return (f?.value as string) || ''
   }
 
@@ -646,8 +647,9 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       {/* Filtres actifs */}
       {filters.activeFilters.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-sm font-medium text-neutral-700">Filtres actifs :</h3>
-          {filters.activeFilters.map(filter => (
+        <h3 className="text-sm font-medium text-neutral-700">Filtres actifs :</h3>
+        {console.log('🎯 Filtres actifs:', filters.activeFilters)}
+        {filters.activeFilters.map(filter => (
             <div key={filter.id} className="flex items-center gap-2 p-3 bg-neutral-50 rounded-lg border">
               <div className="flex items-center gap-2 text-sm text-neutral-600">
                 {getFilterIcon(filter.type)}
