@@ -256,10 +256,12 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       value: valueISO
     }
     console.log(`  - Création nouveau filtre:`, newFilter)
-    setFilters({
+    const newFilters = {
       ...filters,
       activeFilters: [...filters.activeFilters, newFilter]
-    })
+    }
+    console.log(`  - Nouvel état des filtres:`, newFilters.activeFilters)
+    setFilters(newFilters)
   }
 
   const removeDateFilter = (operator: 'gte' | 'lte') => {
@@ -287,6 +289,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
   }
 
   const getDateFilterValue = (operator: 'gte' | 'lte') => {
+    console.log(`🔍 getDateFilterValue(${operator}) - Filtres disponibles:`, filters.activeFilters.map(f => `${f.operator}=${f.value}`))
     const f = filters.activeFilters.find(
       x => x.field === DATE_FIELD && x.type === 'date' && x.operator === operator
     )
