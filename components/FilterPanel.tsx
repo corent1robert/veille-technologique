@@ -289,11 +289,9 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
   }
 
   const getDateFilterValue = (operator: 'gte' | 'lte') => {
-    console.log(`🔍 getDateFilterValue(${operator}) - Filtres disponibles:`, filters.activeFilters.map(f => `${f.operator}=${f.value}`))
     const f = filters.activeFilters.find(
       x => x.field === DATE_FIELD && x.type === 'date' && x.operator === operator
     )
-    console.log(`🔍 getDateFilterValue(${operator}):`, f?.value || 'vide')
     return (f?.value as string) || ''
   }
 
@@ -613,8 +611,17 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
           >30 jours</button>
           <button
             onClick={() => {
-              console.log('🔥 CLIC 90 jours')
-              applyDatePresetDays(90)
+              console.log('🔥 CLIC 90 jours - Effacer d\'abord tous les filtres')
+              // Effacer tous les filtres de date existants
+              setFilters({
+                ...filters,
+                activeFilters: filters.activeFilters.filter(f => f.field !== DATE_FIELD)
+              })
+              // Puis appliquer le nouveau filtre
+              setTimeout(() => {
+                console.log('🔥 Appliquer filtre 90 jours après nettoyage')
+                applyDatePresetDays(90)
+              }, 100)
             }}
             className="text-xs px-2 py-1 border border-neutral-300 rounded hover:bg-white"
           >90 jours</button>
@@ -657,9 +664,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       {filters.activeFilters.length > 0 && (
         <div className="space-y-3">
         <h3 className="text-sm font-medium text-neutral-700">Filtres actifs :</h3>
-        {filters.activeFilters.map(filter => {
-          console.log('🎯 Filtres actifs:', filters.activeFilters)
-          return (
+        {filters.activeFilters.map(filter => (
             <div key={filter.id} className="flex items-center gap-2 p-3 bg-neutral-50 rounded-lg border">
               <div className="flex items-center gap-2 text-sm text-neutral-600">
                 {getFilterIcon(filter.type)}
@@ -719,8 +724,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
                 <X className="w-4 h-4" />
               </button>
             </div>
-          )
-        })}
+          ))}
         </div>
       )}
 
