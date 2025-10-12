@@ -5,57 +5,66 @@ import { searchInVeilleData } from './searchUtils'
 function groupTechnologie(value: string): string {
   const lowerValue = value.toLowerCase()
   
-  // Extrusion & FDM
-  if (lowerValue.includes('extrusion') || lowerValue.includes('fdm') ||
-      lowerValue.includes('fused deposition') || lowerValue.includes('filament')) {
+  // Extrusion de matière (32 occurrences - le plus fréquent)
+  if (lowerValue.includes('extrusion') || lowerValue.includes('extrusion de matière') ||
+      lowerValue.includes('fdm') || lowerValue.includes('fused deposition') ||
+      lowerValue.includes('filament') || lowerValue.includes('dépôt de filament')) {
     return 'Extrusion & FDM'
   }
-  // Photopolymérisation & SLA
+  // Photopolymérisation (13 occurrences)
   else if (lowerValue.includes('photopolymérisation') || lowerValue.includes('sla') ||
            lowerValue.includes('stereolithography') || lowerValue.includes('dlp') ||
-           lowerValue.includes('uv') || lowerValue.includes('résine')) {
+           lowerValue.includes('uv') || lowerValue.includes('résine') ||
+           lowerValue.includes('photopolymer')) {
     return 'Photopolymérisation & SLA'
   }
-  // Fusion sur lit de poudre
+  // Fusion sur lit de poudre (13+1 occurrences)
   else if (lowerValue.includes('fusion sur lit') || lowerValue.includes('sintering') ||
            lowerValue.includes('sls') || lowerValue.includes('slm') ||
            lowerValue.includes('poudre métal') || lowerValue.includes('poudre polymère') ||
            lowerValue.includes('selective laser') || lowerValue.includes('eos') ||
-           lowerValue.includes('multijet fusion') || lowerValue.includes('mjf')) {
+           lowerValue.includes('multijet fusion') || lowerValue.includes('mjf') ||
+           lowerValue.includes('lit de poudre')) {
     return 'Fusion sur lit de poudre'
   }
-  // Jet de matière & Binder Jetting
-  else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
-           lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
-           lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol')) {
-    return 'Jet de matière & Binder Jetting'
-  }
-  // Bio-impression & Biomédical
+  // Bio-impression (5 occurrences)
   else if (lowerValue.includes('bio-impression') || lowerValue.includes('bioprinting') ||
            lowerValue.includes('biomédical') || lowerValue.includes('tissulaire') ||
-           lowerValue.includes('cellules') || lowerValue.includes('organoïdes')) {
+           lowerValue.includes('cellules') || lowerValue.includes('organoïdes') ||
+           lowerValue.includes('bio') || lowerValue.includes('tissu')) {
     return 'Bio-impression & Biomédical'
   }
-  // Impression 3D Béton & Construction
+  // Impression 3D Béton
   else if (lowerValue.includes('béton') || lowerValue.includes('concrete') ||
-           lowerValue.includes('construction') || lowerValue.includes('ciment')) {
+           lowerValue.includes('construction') || lowerValue.includes('ciment') ||
+           lowerValue.includes('impression 3d béton')) {
     return 'Impression 3D Béton & Construction'
   }
-  // Procédés conventionnels
+  // Jet de matière
+  else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
+           lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
+           lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol') ||
+           lowerValue.includes('jet')) {
+    return 'Jet de matière & Binder Jetting'
+  }
+  // Procédés conventionnels (2 occurrences)
   else if (lowerValue.includes('conventionnel') || lowerValue.includes('injection') ||
            lowerValue.includes('moulage') || lowerValue.includes('thermoformage') ||
-           lowerValue.includes('electroformage') || lowerValue.includes('electroforming')) {
+           lowerValue.includes('electroformage') || lowerValue.includes('electroforming') ||
+           lowerValue.includes('procédé conventionnel')) {
     return 'Procédés conventionnels'
   }
   // Métrologie & Contrôle
   else if (lowerValue.includes('métrologie') || lowerValue.includes('numérisation') ||
            lowerValue.includes('scan') || lowerValue.includes('contrôle') ||
-           lowerValue.includes('mesure') || lowerValue.includes('inspection')) {
+           lowerValue.includes('mesure') || lowerValue.includes('inspection') ||
+           lowerValue.includes('cad/cam') || lowerValue.includes('cad-cam')) {
     return 'Métrologie & Contrôle'
   }
-  // Non précisé & Autres
+  // Non précisé & Autres (29+2+ autres)
   else if (lowerValue.includes('non précisé') || lowerValue.includes('autre') ||
-           lowerValue.includes('non precise') || lowerValue.includes('non spécifié')) {
+           lowerValue.includes('non precise') || lowerValue.includes('non spécifié') ||
+           lowerValue.includes('autres') || lowerValue.includes('ia pour revue')) {
     return 'Non précisé & Autres'
   }
   // Autres technologies spécialisées

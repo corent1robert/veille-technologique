@@ -282,21 +282,39 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       raw = Array.from(groupedValues).sort()
     }
 
-    // Post-traitement spécifique pour la Technologie: regrouper en grandes familles
+    // Post-traitement spécifique pour la Technologie: regrouper par mots-clés réels
     if (field === 'analyse_technique.technologie') {
-      const groupedValues = new Set<string>()
+      const separatedValues = new Set<string>()
       raw.forEach(value => {
+        // Séparer par virgule et nettoyer chaque élément
+        const parts = value.split(',').map(part => part.trim()).filter(part => part.length > 0)
+        parts.forEach(part => {
+          // Nettoyer les espaces et caractères spéciaux
+          const cleanPart = part.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim()
+          if (cleanPart) {
+            separatedValues.add(cleanPart)
+          }
+        })
+      })
+      
+      // Regrouper en grandes thématiques basées sur l'analyse des données réelles
+      const groupedValues = new Set<string>()
+      console.log('🔍 Technologies séparées:', Array.from(separatedValues))
+      separatedValues.forEach(value => {
         const lowerValue = value.toLowerCase()
+        console.log(`🔍 Traitement technologie: "${value}" -> "${lowerValue}"`)
         
-        // Extrusion & FDM (33 occurrences)
-        if (lowerValue.includes('extrusion') || lowerValue.includes('fdm') ||
-            lowerValue.includes('fused deposition') || lowerValue.includes('filament')) {
+        // Extrusion de matière (32 occurrences - le plus fréquent)
+        if (lowerValue.includes('extrusion') || lowerValue.includes('extrusion de matière') ||
+            lowerValue.includes('fdm') || lowerValue.includes('fused deposition') ||
+            lowerValue.includes('filament') || lowerValue.includes('dépôt de filament')) {
           groupedValues.add('Extrusion & FDM')
         }
-        // Photopolymérisation & SLA (13 occurrences)
+        // Photopolymérisation (13 occurrences)
         else if (lowerValue.includes('photopolymérisation') || lowerValue.includes('sla') ||
                  lowerValue.includes('stereolithography') || lowerValue.includes('dlp') ||
-                 lowerValue.includes('uv') || lowerValue.includes('résine')) {
+                 lowerValue.includes('uv') || lowerValue.includes('résine') ||
+                 lowerValue.includes('photopolymer')) {
           groupedValues.add('Photopolymérisation & SLA')
         }
         // Fusion sur lit de poudre (13+1 occurrences)
@@ -304,41 +322,48 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
                  lowerValue.includes('sls') || lowerValue.includes('slm') ||
                  lowerValue.includes('poudre métal') || lowerValue.includes('poudre polymère') ||
                  lowerValue.includes('selective laser') || lowerValue.includes('eos') ||
-                 lowerValue.includes('multijet fusion') || lowerValue.includes('mjf')) {
+                 lowerValue.includes('multijet fusion') || lowerValue.includes('mjf') ||
+                 lowerValue.includes('lit de poudre')) {
           groupedValues.add('Fusion sur lit de poudre')
         }
-        // Jet de matière & Binder Jetting (1+ occurrences)
-        else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
-                 lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
-                 lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol')) {
-          groupedValues.add('Jet de matière & Binder Jetting')
-        }
-        // Bio-impression & Biomédical (5 occurrences)
+        // Bio-impression (5 occurrences)
         else if (lowerValue.includes('bio-impression') || lowerValue.includes('bioprinting') ||
                  lowerValue.includes('biomédical') || lowerValue.includes('tissulaire') ||
-                 lowerValue.includes('cellules') || lowerValue.includes('organoïdes')) {
+                 lowerValue.includes('cellules') || lowerValue.includes('organoïdes') ||
+                 lowerValue.includes('bio') || lowerValue.includes('tissu')) {
           groupedValues.add('Bio-impression & Biomédical')
         }
-        // Impression 3D Béton & Construction
+        // Impression 3D Béton
         else if (lowerValue.includes('béton') || lowerValue.includes('concrete') ||
-                 lowerValue.includes('construction') || lowerValue.includes('ciment')) {
+                 lowerValue.includes('construction') || lowerValue.includes('ciment') ||
+                 lowerValue.includes('impression 3d béton')) {
           groupedValues.add('Impression 3D Béton & Construction')
+        }
+        // Jet de matière
+        else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
+                 lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
+                 lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol') ||
+                 lowerValue.includes('jet')) {
+          groupedValues.add('Jet de matière & Binder Jetting')
         }
         // Procédés conventionnels (2 occurrences)
         else if (lowerValue.includes('conventionnel') || lowerValue.includes('injection') ||
                  lowerValue.includes('moulage') || lowerValue.includes('thermoformage') ||
-                 lowerValue.includes('electroformage') || lowerValue.includes('electroforming')) {
+                 lowerValue.includes('electroformage') || lowerValue.includes('electroforming') ||
+                 lowerValue.includes('procédé conventionnel')) {
           groupedValues.add('Procédés conventionnels')
         }
         // Métrologie & Contrôle
         else if (lowerValue.includes('métrologie') || lowerValue.includes('numérisation') ||
                  lowerValue.includes('scan') || lowerValue.includes('contrôle') ||
-                 lowerValue.includes('mesure') || lowerValue.includes('inspection')) {
+                 lowerValue.includes('mesure') || lowerValue.includes('inspection') ||
+                 lowerValue.includes('cad/cam') || lowerValue.includes('cad-cam')) {
           groupedValues.add('Métrologie & Contrôle')
         }
-        // Non précisé & Autres (28+2+ autres)
+        // Non précisé & Autres (29+2+ autres)
         else if (lowerValue.includes('non précisé') || lowerValue.includes('autre') ||
-                 lowerValue.includes('non precise') || lowerValue.includes('non spécifié')) {
+                 lowerValue.includes('non precise') || lowerValue.includes('non spécifié') ||
+                 lowerValue.includes('autres') || lowerValue.includes('ia pour revue')) {
           groupedValues.add('Non précisé & Autres')
         }
         // Autres technologies spécialisées
