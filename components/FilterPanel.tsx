@@ -181,7 +181,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
         const lowerValue = value.toLowerCase()
         console.log(`🔍 Traitement secteur: "${value}" -> "${lowerValue}"`)
         
-        // Santé & Médical (le plus fréquent - 14+ occurrences)
+        // Santé & Médical (le plus fréquent - 15+ occurrences)
         if (lowerValue.includes('médical') || lowerValue.includes('medical') || 
             lowerValue.includes('santé') || lowerValue.includes('health') || 
             lowerValue.includes('dentaire') || lowerValue.includes('dental') ||
@@ -194,41 +194,51 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
             lowerValue.includes('médecine régénérative') || lowerValue.includes('neurosciences') ||
             lowerValue.includes('neurochirurgie') || lowerValue.includes('ingénierie tissulaire') ||
             lowerValue.includes('orthopédie') || lowerValue.includes('laboratoires dentaires') ||
-            lowerValue.includes('biomatériaux') || lowerValue.includes('biomédicale')) {
+            lowerValue.includes('biomatériaux') || lowerValue.includes('biomédicale') ||
+            lowerValue.includes('chirurgie') || lowerValue.includes('surgery') ||
+            lowerValue.includes('télémédecine') || lowerValue.includes('green healthcare') ||
+            lowerValue.includes('imagerie médicale') || lowerValue.includes('scanner 3d') ||
+            lowerValue.includes('parodontologie') || lowerValue.includes('maxillo-faciale') ||
+            lowerValue.includes('restauratrice') || lowerValue.includes('facettes') ||
+            lowerValue.includes('couronnes') || lowerValue.includes('manufacturing dentaire')) {
           groupedValues.add('Santé & Médical')
         }
-        // Automobile & Transport (13 occurrences)
+        // Automobile & Transport (15+ occurrences)
         else if (lowerValue.includes('automobile') || lowerValue.includes('automotive') || 
                  lowerValue.includes('transport') || lowerValue.includes('mobilité') || 
                  lowerValue.includes('mobility') || lowerValue.includes('véhicule') ||
-                 lowerValue.includes('motorsports')) {
+                 lowerValue.includes('motorsports') || lowerValue.includes('auto')) {
           groupedValues.add('Automobile & Transport')
         }
-        // Aéronautique & Défense (8+4+3+2 occurrences)
+        // Aéronautique & Défense (8+4+3+2+3 occurrences)
         else if (lowerValue.includes('aéronautique') || lowerValue.includes('aeronautique') || 
                  lowerValue.includes('spatial') || lowerValue.includes('aviation') || 
                  lowerValue.includes('défense') || lowerValue.includes('defense') ||
                  lowerValue.includes('military') || lowerValue.includes('armée') ||
-                 lowerValue.includes('aérospatial') || lowerValue.includes('militaire')) {
+                 lowerValue.includes('aérospatial') || lowerValue.includes('militaire') ||
+                 lowerValue.includes('aerospace') || lowerValue.includes('aérospatiale')) {
           groupedValues.add('Aéronautique & Défense')
         }
-        // Biotechnologie & Recherche (8+6+5+2+2 occurrences)
+        // Biotechnologie & Recherche (10+6+5+3+3 occurrences)
         else if (lowerValue.includes('biotechnologie') || lowerValue.includes('biotechnology') ||
                  lowerValue.includes('recherche') || lowerValue.includes('research') ||
                  lowerValue.includes('développement') || lowerValue.includes('development') ||
                  lowerValue.includes('r&d') || lowerValue.includes('académique') ||
-                 lowerValue.includes('universitaire') || lowerValue.includes('université')) {
+                 lowerValue.includes('universitaire') || lowerValue.includes('université') ||
+                 lowerValue.includes('recherche biomédicale') || lowerValue.includes('neurosciences') ||
+                 lowerValue.includes('ingénierie tissulaire') || lowerValue.includes('recherche et développement')) {
           groupedValues.add('Biotechnologie & Recherche')
         }
-        // Éducation & Formation (5+4+2+2+2 occurrences)
+        // Éducation & Formation (5+3+3 occurrences)
         else if (lowerValue.includes('éducation') || lowerValue.includes('education') || 
                  lowerValue.includes('formation') || lowerValue.includes('training') ||
                  lowerValue.includes('makerspaces') || lowerValue.includes('fablab') ||
                  lowerValue.includes('université') || lowerValue.includes('university') ||
-                 lowerValue.includes('technique')) {
+                 lowerValue.includes('technique') || lowerValue.includes('éducation et formation') ||
+                 lowerValue.includes('éducation et recherche') || lowerValue.includes('formation technique')) {
           groupedValues.add('Éducation & Formation')
         }
-        // Industrie & Manufacturing (3+2+2+2 occurrences)
+        // Industrie & Manufacturing (3+3+3+5 occurrences)
         else if (lowerValue.includes('industrie') || lowerValue.includes('industrial') || 
                  lowerValue.includes('manufacturing') || lowerValue.includes('fabrication') ||
                  lowerValue.includes('production') || lowerValue.includes('outillage') ||
@@ -237,31 +247,41 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
                  lowerValue.includes('impression 3d') || lowerValue.includes('3d printing') ||
                  lowerValue.includes('moules') || lowerValue.includes('molds') ||
                  lowerValue.includes('prototypage') || lowerValue.includes('prototyping') ||
-                 lowerValue.includes('pièces fonctionnelles') || lowerValue.includes('manufacturière')) {
+                 lowerValue.includes('pièces fonctionnelles') || lowerValue.includes('manufacturière') ||
+                 lowerValue.includes('industrie manufacturière') || lowerValue.includes('industrial manufacturing') ||
+                 lowerValue.includes('équipements industriels')) {
           groupedValues.add('Industrie & Manufacturing')
         }
-        // Architecture & Construction (4+3+2 occurrences)
+        // Architecture & Construction (3+3 occurrences)
         else if (lowerValue.includes('architecture') || lowerValue.includes('construction') ||
                  lowerValue.includes('design industriel') || lowerValue.includes('urbanisme') ||
                  lowerValue.includes('aménagement') || lowerValue.includes('génie civil') ||
-                 lowerValue.includes('infrastructures') || lowerValue.includes('immobilier')) {
+                 lowerValue.includes('infrastructures') || lowerValue.includes('immobilier') ||
+                 lowerValue.includes('architecture et construction') || lowerValue.includes('logement') ||
+                 lowerValue.includes('résidentielle') || lowerValue.includes('social') ||
+                 lowerValue.includes('secours humanitaire') || lowerValue.includes('post-catastrophe')) {
           groupedValues.add('Architecture & Construction')
         }
-        // Électronique & IT (2+2 occurrences)
+        // Électronique & IT (3+2 occurrences)
         else if (lowerValue.includes('électronique') || lowerValue.includes('electronics') || 
                  lowerValue.includes('informatique') || lowerValue.includes('it') ||
                  lowerValue.includes('télécommunications') || lowerValue.includes('telecom') ||
                  lowerValue.includes('cybersécurité') || lowerValue.includes('cybersecurity') ||
                  lowerValue.includes('semi-conducteur') || lowerValue.includes('semiconductor') ||
-                 lowerValue.includes('boîtiers') || lowerValue.includes('circuits')) {
+                 lowerValue.includes('boîtiers') || lowerValue.includes('circuits') ||
+                 lowerValue.includes('data centers') || lowerValue.includes('infrastructures cloud') ||
+                 lowerValue.includes('électronique de puissance') || lowerValue.includes('refroidissement') ||
+                 lowerValue.includes('électronique grand public') || lowerValue.includes('consumer goods')) {
           groupedValues.add('Électronique & IT')
         }
-        // Biens de consommation & Retail (4+2+2 occurrences)
+        // Biens de consommation & Retail (5+2+2 occurrences)
         else if (lowerValue.includes('consommation') || lowerValue.includes('consumer') || 
                  lowerValue.includes('grand public') || lowerValue.includes('retail') ||
                  lowerValue.includes('e-commerce') || lowerValue.includes('commerce') ||
                  lowerValue.includes('luxe') || lowerValue.includes('parfumerie') ||
-                 lowerValue.includes('cosmétique') || lowerValue.includes('bijouterie')) {
+                 lowerValue.includes('cosmétique') || lowerValue.includes('bijouterie') ||
+                 lowerValue.includes('biens de consommation') || lowerValue.includes('consumer goods') ||
+                 lowerValue.includes('mode') || lowerValue.includes('fashion')) {
           groupedValues.add('Biens de consommation & Retail')
         }
         // Énergie & Environnement (2+2 occurrences)
@@ -270,7 +290,8 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
                  lowerValue.includes('éolien') || lowerValue.includes('wind') ||
                  lowerValue.includes('solaire') || lowerValue.includes('solar') ||
                  lowerValue.includes('hydrogène') || lowerValue.includes('hydrogen') ||
-                 lowerValue.includes('renouvelable') || lowerValue.includes('thermique')) {
+                 lowerValue.includes('renouvelable') || lowerValue.includes('thermique') ||
+                 lowerValue.includes('énergies renouvelables') || lowerValue.includes('gestion thermique')) {
           groupedValues.add('Énergie & Environnement')
         }
         // Autres
