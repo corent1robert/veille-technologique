@@ -97,7 +97,7 @@ export function FilterPanel({ filters, setFilters, data, currentClient }: Filter
       type: 'select',
       label: 'Technologie',
       field: 'analyse_technique.technologie',
-      operator: 'eq'
+      operator: 'contains'
     },
     {
       id: 'logiciel',
