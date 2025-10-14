@@ -8,23 +8,29 @@ function groupTechnologie(value: string): string {
   // Extrusion de matière (32 occurrences - le plus fréquent)
   if (lowerValue.includes('extrusion') || lowerValue.includes('extrusion de matière') ||
       lowerValue.includes('fdm') || lowerValue.includes('fused deposition') ||
+      lowerValue.includes('fff') || lowerValue.includes('fgf') ||
+      lowerValue.includes('direct ink writing') || lowerValue.includes('diw') ||
+      lowerValue.includes('semi-solid extrusion') || lowerValue.includes('granulate') ||
       lowerValue.includes('filament') || lowerValue.includes('dépôt de filament')) {
     return 'Extrusion & FDM'
   }
   // Photopolymérisation (13 occurrences)
   else if (lowerValue.includes('photopolymérisation') || lowerValue.includes('sla') ||
            lowerValue.includes('stereolithography') || lowerValue.includes('dlp') ||
+           lowerValue.includes('lcd') || lowerValue.includes('vat') ||
            lowerValue.includes('uv') || lowerValue.includes('résine') ||
-           lowerValue.includes('photopolymer')) {
+           lowerValue.includes('photopolymer') || lowerValue.includes('two-photon') ||
+           lowerValue.includes('vat photopolymerization')) {
     return 'Photopolymérisation & SLA'
   }
   // Fusion sur lit de poudre (13+1 occurrences)
   else if (lowerValue.includes('fusion sur lit') || lowerValue.includes('sintering') ||
            lowerValue.includes('sls') || lowerValue.includes('slm') ||
+           lowerValue.includes('lpbf') || lowerValue.includes('ebm') ||
            lowerValue.includes('poudre métal') || lowerValue.includes('poudre polymère') ||
            lowerValue.includes('selective laser') || lowerValue.includes('eos') ||
            lowerValue.includes('multijet fusion') || lowerValue.includes('mjf') ||
-           lowerValue.includes('lit de poudre')) {
+           lowerValue.includes('saf') || lowerValue.includes('lit de poudre')) {
     return 'Fusion sur lit de poudre'
   }
   // Bio-impression (5 occurrences)
@@ -43,8 +49,9 @@ function groupTechnologie(value: string): string {
   // Jet de matière
   else if (lowerValue.includes('jet de matière') || lowerValue.includes('jet de liant') ||
            lowerValue.includes('binder jetting') || lowerValue.includes('inkjet') ||
-           lowerValue.includes('jet d\'encre') || lowerValue.includes('jet d\'aérosol') ||
-           lowerValue.includes('jet')) {
+           lowerValue.includes('aerosol jet') || lowerValue.includes('polyjet') ||
+           lowerValue.includes('mjm') || lowerValue.includes('jet d\'encre') ||
+           lowerValue.includes('jet d\'aérosol') || lowerValue.includes('jet')) {
     return 'Jet de matière & Binder Jetting'
   }
   // Procédés conventionnels (2 occurrences)
@@ -69,6 +76,13 @@ function groupTechnologie(value: string): string {
   }
   // Autres technologies spécialisées
   else {
+    // Quelques mots-clés spécialisés qui basculent dans "autres"
+    if (lowerValue.includes('ded') || lowerValue.includes('directed energy deposition') ||
+        lowerValue.includes('waam') || lowerValue.includes('wire arc additive') ||
+        lowerValue.includes('csam') || lowerValue.includes('cold spray') ||
+        lowerValue.includes('electron beam') || lowerValue.includes('melt electrowriting')) {
+      return 'Autres technologies spécialisées'
+    }
     return 'Autres technologies spécialisées'
   }
 }
